@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#017FFC</color>
+    <color name="colorTopBar">#FFFFFF</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorGray">#D3D2D6</color>
+    <color name="colorGray2">#C8C8C8</color>
+    <color name="colorGray3">#D5D5D5</color>
+    <color name="colorAlpha30Gray4">#4D272D35</color>
+    <color name="colorAlpha80Gray4">#CC272D35</color>
+    <color name="colorGray5">#B8B8B8</color>
+    <color name="colorGray6">#F2F2F2</color>
+    <color name="colorGray7">#323840</color>
+    <color name="colorGray8">#464650</color>
+    <color name="colorGray9">#5D6269</color>
+    <color name="colorGray10">#BEBEBD</color>
+    <color name="colorAlpha40Gray11">#66353843</color>
+    <color name="colorGray12">#C6C6C6</color>
+    <color name="colorFontDark">#272D35</color>
+    <color name="colorFontDark1">#010101</color>
+    <color name="colorFontDark2">#939292</color>
+    <color name="colorFontDark3">#0B0507</color>
+    <color name="colorFontDark4">#6E6B65</color>
+    <color name="colorFontDark5">#505A64</color>
+    <color name="colorFontDark6">#13161A</color>
+    <color name="colorFontDark7">#545454</color>
+    <color name="colorFontDark8">#DFDFDF</color>
+    <color name="colorFontDark9">#454A4F</color>
+    <color name="colorBlack">#27303B</color>
+
+    <color name="colorBlue">#017FFC</color>
+    <color name="colorTransparentBg">#66000000</color>
+    <color name="colorBg">#F6F3F2</color>
+    <color name="colorYellow">#FBA800</color>
+    <color name="colorRed">#FE0000</color>
+
+    <color name="gray">#f5f5f5</color>
+    <color name="switch_btn_colors">#FBA800</color>
+
+    <color name="log_warn">#AB0014</color>
+    <color name="log_err">#2096F5</color>
+    <color name="log_ok">#9013FE</color>
+
+    <color name="text_yellow">#FFC616</color>
+    <color name="text_yellow2">#F39C0F</color>
+    <color name="text_grey">#C7C7C7</color>
+</resources>

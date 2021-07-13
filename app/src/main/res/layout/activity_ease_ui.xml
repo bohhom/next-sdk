@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.lib.sdk.next.NextMapView
+        android:id="@+id/next_map_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/ease_init_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="初始化"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <Button
+        android:id="@+id/ease_value_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="设置橡皮擦大小"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ease_init_button"
+        app:layout_constraintEnd_toEndOf="@id/ease_init_button"
+
+        />
+    
+    <EditText
+        android:id="@+id/ease_value_ed"
+        android:layout_width="200dp"
+        android:inputType="number"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/ease_value_button"
+        app:layout_constraintTop_toTopOf="@id/ease_value_button"
+        app:layout_constraintBottom_toBottomOf="@id/ease_value_button"
+        />
+
+    <Button
+        android:id="@+id/edit_point_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="擦除某个点"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ease_value_button"
+        app:layout_constraintVertical_bias="0.1" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

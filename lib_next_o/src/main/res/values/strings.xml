@@ -1,0 +1,348 @@
+<resources>
+    <!--网络异常提示-->
+    <string name="unauthorized">请联系客服处理</string>
+    <string name="not_found">请检查网络连接是否正确</string>
+    <string name="request_timeout">请检查网络连接是否稳定</string>
+    <string name="bad_gateway">请更新机器人上位机软件</string>
+    <string name="parse_error">请更新APP</string>
+    <string name="not_found2">请检查网络是否连接</string>
+    <string name="server_connect_error">服务器连接中断,请联系客服处理</string>
+    <!--WifiListActivity1-->
+    <string name="prompt_scan_wifi">正在扫描附近Wifi</string>
+    <string name="prompt_open_location_permission">请到设置中打开应用的位置权限</string>
+    <string name="next_step">下一步</string>
+    <string name="back_previous">撤销</string>
+    <string name="cancel">取消</string>
+    <string name="input_pwd">输入密码</string>
+    <string name="prompt_select_connect_wifi">请选择要连接的Wifi</string>
+    <string name="wifi_connect_hint">*机器人启动后两分钟左右出现WIFI</string>
+
+    <!--ConnectWifiActivity1-->
+    <string name="prompt_input_wifi_pwd">连接到\"%1$s\"</string>
+
+    <!--LoginActivity-->
+    <string name="pwd">密码</string>
+    <string name="login_name">机器人名</string>
+    <string name="ip_address">IP地址</string>
+    <string name="prompt_serial_number">序列号</string>
+    <string name="join">加入</string>
+    <string name="login">连接</string>
+    <string name="prompt_input_name">请输入机器人名</string>
+    <string name="prompt_input_pwd">请输入密码</string>
+    <string name="prompt_input_ip">请输入IP地址</string>
+    <string name="login_success">登录成功</string>
+    <string name="prompt_do_map_sync">是否从机器人下载地图</string>
+    <string name="prompt_name_can_not_have_special_char">输入的名称不能包含特殊字符</string>
+
+    <!--AddMapActivity-->
+    <string name="add_map">添加地图</string>
+    <string name="prompt_add_map">暂未添加地图，请点击添加地图</string>
+    <string name="speed_volume_set">速度和音量</string>
+    <string name="power_alarm_threshold_set">自动充电</string>
+    <string name="info_set">关于机器人</string>
+    <string name="language_set">语言</string>
+    <string name="other_set">其他设置</string>
+    <string name="new_map">新建地图</string>
+    <string name="prompt_input_map_name">请输入地图名称</string>
+    <string name="operating_mode">工作模式设置</string>
+
+    <!--EditMapActivity-->
+    <string name="confirm">确认</string>
+    <string name="load">切换</string>
+    <string name="sync">同步</string>
+    <string name="upload">上传</string>
+    <string name="toast_already_previous_success">已返回上一步</string>
+    <string name="toast_drag_click">拖动修改位置，长按修改方向</string>
+    <string name="edit_cancel_hint">确认取消当前修改？</string>
+    <string name="edit_save_hint">确认保存当前修改？</string>
+    <string name="hint_delete_init">确认删除所选初始点？</string>
+    <string name="hint_delete_charge">确认删除所选充电点？</string>
+    <string name="hint_delete_virtual">确认删除所选虚拟墙？</string>
+    <string name="hint_delete_route">确认删除所选航路？</string>
+    <string name="hint_delete_standby">确认删除所选待命点？</string>
+    <string name="toast_erase_click">请点击地图，唤醒噪点擦</string>
+
+    <!--LanguageSetFragment-->
+    <string name="text_simplified_chinese">简体中文</string>
+    <string name="text_english">English</string>
+
+    <!--ParameterSetActivity-->
+    <string name="speed_unit">m/s</string>
+    <string name="num_0">0</string>
+    <string name="num_20">20</string>
+    <string name="num_100">100</string>
+    <string name="save">保存</string>
+    <string name="title_max_line_speed">最大线速度：%1$2.2f</string>
+    <string name="title_max_angular_speed">最大角速度：%1$2.2f</string>
+    <string name="percentage">%</string>
+    <string name="to">至</string>
+    <string name="hour">时</string>
+    <string name="minute">分</string>
+    <string name="robot_name">机器人名称</string>
+    <string name="title_robot_ip">机器人IP</string>
+    <string name="about_us">关于我们</string>
+    <string name="about_us_introduce_pre">专注智能制造，以技术创新为核心，引领行业发展。\n</string>
+    <string name="about_us_introduce">
+博众精工科技股份有限公司，专注智能制造，以技术创新为核心，引领行业发展，立足中国，服务全球。致力于为客户提供数字化工厂的整体解决方案，从工业自动化设备、自动化生产线、工装夹（治）具、智能立体仓储物流、信息化产品到系统总集成，涵盖消费类电子、汽车、新能源、家电、泛家居以及日用品、化妆品、医疗用品、食品等业务领域。针对不同行业的需求，整合运动控制、影像光学、机械手运用、信息化、精密贴装和精密压合等技术，结合自有的软件开发平台为客户提供极具竞争力的产品和服务。
+    </string>
+    <string name="set">设置</string>
+    <string name="exit">退出</string>
+    <string name="hint_exit">确认退出APP？</string>
+    <string name="map_list">地图列表</string>
+
+    <string name="title_reservation_time">开始时间：%1$s%2$s | 结束时间：%3$s%4$s</string>
+    <string name="hint_power_threshold">极低电量：必须满足充电点到有效工作最远点的距离所需的电量值；低于该电量，机器人不接受新任务，中断当前任务去充电\n低电量：可以满足1个任务执行所需的全部电量；低于该电量，机器人不接受新任务，执行完当前任务后去充电\n工作电量：机器人能够维持良好电量状态来执行任务的的电量值；机器人接受新任务，执行完当前任务后，根据是否处于工作时段及相应设置执行</string>
+    <string name="hint_charge_time">充电时段：在此时间范围内，机器人优先执行充电，当电量高于低电量值时，机器人可间歇地工作，任务结束后自动回充。\n工作时段：充电时段以外均为工作时段，在此时段，机器人优先执行工作任务，但达到“触发充电请求”时会自动回充。</string>
+    <string name="set_charge_success">自动充电设置成功！</string>
+    <string name="work_power_must_high">工作电量必须大于等于低电量！</string>
+    <string name="low_power_must_high">低电量必须大于等于极低电量！</string>
+    <string name="end_time_must_high">结束时间必须大于开始时间！</string>
+    <string name="power_threshold">电量阈值</string>
+    <string name="power_threshold_switch">自动充电开关</string>
+    <string name="work_power">工作电量</string>
+    <string name="low_power">低电量</string>
+    <string name="ex_low_power">极低电量</string>
+    <string name="charge_time">充电时段</string>
+
+    <string name="title_robot_version">机器人版本号：%1$s</string>
+    <string name="title_app_version">APP版本号：%1$s</string>
+
+    <!--AddNavigationActivity1-->
+    <string name="prompt_name_can_not_empty">名称不能为空</string>
+    <string name="back">返回</string>
+    <string name="navigation_route">航路</string>
+    <string name="choose_route_type">选择航路类型</string>
+    <string name="navigation_point">导航点</string>
+    <string name="add_navigation">新建导航点</string><!-- 添加导航点-->
+    <string name="add_init">新建初始点</string>
+    <string name="add_charge">新建充电点</string>
+    <string name="add_standby">新建待命点</string>
+    <string name="input_navigation_name">请输入导航点名称</string><!-- 添加导航点-->
+    <string name="input_init_name">请输入初始点名称</string>
+    <string name="input_charge_name">请输入充电点名称</string>
+    <string name="input_standby_name">请输入待命点名称</string>
+    <string name="prompt_name_already_exist">输入的点名称重复</string>
+    <string name="prompt_add_navigation_in_map">请在地图上点击添加导航点</string>
+    <string name="prompt_add_init_in_map">请在地图上点击添加初始点</string>
+    <string name="prompt_add_charge_in_map">请在地图上点击添加充电点</string>
+    <string name="prompt_add_standby_in_map">请在地图上点击添加待命点</string>
+    <string name="update_name">修改名称</string>
+    <string name="complete">完成</string>
+    <string name="hint_delete_navigation">确认删除所选导航点？</string>
+    <string name="location">添加</string>
+    <string name="toast_add_click">点击地图，或操控机器人到目标位置再点击添加</string>
+    <string name="toast_add">操控机器人到目标位置再点击添加</string>
+    <string name="rocker">摇杆</string>
+    <string name="location_err">当前机器人位置无法定位</string>
+
+    <!--Exception-->
+    <string name="network_unconnected">网络未连接</string>
+    <string name="network_error">网络错误</string>
+    <string name="server_error">服务器错误</string>
+    <string name="data_exception">数据异常</string>
+    <string name="in_operation">操作中</string>
+    <string name="user_name_already_exits">用户名已存在</string>
+    <string name="in_loading">加载中</string>
+    <string name="close_loop_type">闭环建图</string>
+    <string name="close_loop_hint">请记住机器人当前位姿，完成闭环前需回到当前位姿</string>
+    <string name="close_loop_hint2">在相似度高、环境特征复杂、较大面积及环形场景中使用</string>
+    <string name="close_loop">完成闭环</string>
+    <string name="open_loop_type">开环建图</string>
+    <string name="open_loop_hint">确认使用开环建图？</string>
+    <string name="finish">结束</string>
+    <string name="no">否</string>
+    <string name="yes">是</string>
+    <string name="prompt_loading_data">加载中</string>
+    <string name="prompt_in_sync_data_to_local">正在同步数据到本地</string>
+    <string name="prompt_current_operate_not_save">当前操作没有保存，是否放弃操作？</string>
+
+    <string name="init_point">初始点</string>
+    <string name="charge_point">充电点</string>
+    <string name="virtual_wall">虚拟墙</string>
+    <string name="standby_point">待命点</string>
+    <string name="prompt_add_virtual_wall_in_map">请在地图上添加虚拟墙</string>
+    //导航任务 sdy
+    <string name="start_patrol">开始</string>
+    <string name="stop_patrol">结束</string>
+    <string name="patrol_task">执行任务</string>
+    <string name="task_times">循环次数</string>
+    <string name="prompt_set_this_point_as_a_path_point">是否将该点设为路径点？</string>
+    <string name="prompt_set_this_route_as_a_path_point">是否将该航路设置为导航点？</string>
+    <string name="prompt_start_patrol">是否开始导航？</string>
+    <string name="prompt_stop_patrol">是否停止导航？</string>
+    <string name="prompt_pause_patrol">是否暂停导航？</string>
+    <string name="prompt_recover_patrol">是否恢复导航？</string>
+    <string name="prompt_add_init_location_point_in_map">请在地图上添加初始化定位点</string>
+    <string name="prompt_add_init_point_in_map">请在地图上点击添加初始点</string>
+    <string name="prompt_add_charge_point_in_map">请在地图上点击添加充电点</string>
+    <string name="prompt_error_msg">%1$s</string>
+    <string name="title_battery">%1$d %%</string>
+    <string name="prompt_not_loaded_project_can_not_init_location">不是当前加载的工程，不能进行初始化定位</string>
+    <string name="prompt_input_correct_ip">请输入正确的IP地址</string>
+    <string name="prompt_can_not_delete_robot_loading_map">加载中的工程不可删除</string><!-- 不能删除机器人当前加载的地图 bug[ID1004137]-->
+    <string name="init_location">初始化定位</string>
+    <string name="prompt_server_not_have_this_project_wthere_sync">是否向服务端同步此工程</string>
+    <string name="prompt_in_loading_project">正在切换此工程</string>
+    <string name="prompt_connect_wifi_success">连接wifi成功</string>
+    <string name="prompt_not_have_this_project_load_fail">不存在该工程，加载失败</string>
+    <string name="delete">删除</string>
+    <string name="prompt_get_data">正在获取数据</string>
+    <string name="prompt_save_success">保存成功</string>
+    <string name="prompt_open_read_write_permission">请到设置中打开应用的读写权限</string>
+    <string name="prompt_this_picture_is_to_large">该地图图片太大，无法加载</string>
+    <string name="wifi_pwd_not_correct">wifi密码不正确</string>
+    <string name="prompt_input_correct_wifi_pwd">请输入正确的wifi密码</string>
+    <string name="prompt_connecting">连接中</string>
+    <string name="prompt_pwd_incorrect">密码不正确</string>
+    <string name="prompt_serial_number_incorrect">序列号不正确，请检查是否连接到正确的机器人</string>
+    <string name="success">成功</string>
+    <string name="prompt_scann_wifi_need_open_location_service">扫描wifi需要开启位置定位服务</string>
+    <string name="prompt_open_location_service_in_setting">请到设置中开启手机的定位服务</string>
+    <string name="prompt_whether_save_current_operate">是否保存当前操作?</string>
+    <string name="give_up">放弃</string>
+    <string name="skip">跳过</string>
+    <string name="prompt_connect_time_out">连接超时，请尝试从系统中忘记该wifi，或者使用系统连接</string>
+    <string name="prompt_confirm_cancel_create_map">你确定要取消创建地图吗？此过程不可逆</string>
+    <string name="prompt_confirm_cancel_create_map_e">你确定要取消拓展建图吗？此过程不可逆</string>
+    <string name="prompt_confirm_save_map_e">确认保存当前地图？</string>
+    <string name="warmly_tips">温馨提示：将机器人推到建好的初始点，机器人会自动定位。</string>
+
+
+    <!--MapListActivity-->
+    <string name="map_expansion">拓展地图</string>
+    <string name="map_edit">编辑地图</string>
+    <string name="map_contorl">摇杆控制</string>
+    <string name="remove_noise_operate">去除噪点</string>
+    <string name="confrim_delete_project">确认删除当前地图？</string>
+    <string name="confrim_expand_project">是否开始拓展建图？\n（请先确保机器人定位准确）</string>
+    <string name="intellect_init_location">长按并旋转调整位置和姿态与实际接近</string>
+    <string name="force_init_location">长按并旋转调整位置和姿态与实际一致</string>
+    <string name="hint_search_project">关键字搜索</string>
+
+    <!--脚本-->
+    <string name="map_script">执行脚本</string>
+    <string name="script_executing">脚本执行中</string>
+    <string name="script_paused">脚本已暂停</string>
+    <string name="script_list">脚本列表</string>
+    <string name="script_start">启动</string>
+    <string name="script_pause">暂停</string>
+    <string name="script_reset">复位</string>
+    <string name="script_resume">继续</string>
+    <string name="confirm_script_start">确认执行当前脚本？</string>
+    <string name="confirm_script_reset">复位会终止执行当前脚本，确认复位？</string>
+    <string name="script_running_hit">脚本执行中，无法切换！</string>
+
+    <string name="hint_delte_plan_point">确认删除所选路径点？</string>
+    <string name="hint_delte_choosen_project">确认删除所选工程？</string>
+
+    <!--log-->
+    <string name="title_log">日志</string>
+    <string name="text_start_time">开始时间</string>
+    <string name="text_end_time">结束时间</string>
+    <string name="text_log_level">日志等级</string>
+    <string name="text_search">查询</string>
+    <string name="hint_select_time_err">开始时间必须小于结束时间</string>
+    <string name="hint_select_time_err1">请选择时间</string>
+
+    <string name="title_select_init_mode">请选择初始化定位方式</string>
+    <string name="init_mode1">智能初始化</string>
+    <string name="init_mode2">强制初始化</string>
+    <string name="init_mode3">选点初始化</string>
+
+    <!--I/O控制-->
+    <string name="io_control">I/O控制</string>
+    <string name="send">发送</string>
+    <string name="io_set">设置</string>
+    <string name="io_set_success">I/O 设置成功</string>
+    <string name="hint_input_io_name">请输入修改名称</string>
+
+
+    <!--  定时任务  -->
+    <string name="timed_task">定时任务</string>
+    <string name="timed_task_choose_task">任务选择</string>
+    <string name="Set_Start_Time">设置开始时间</string>
+    <string name="Set_Task_Name">请输入任务名称</string>
+    <string name="Confirm_cancel_task">确认取消任务（退出将不保存编辑内容）？</string>
+    <string name="time_task_cycle">循环次数：%s</string>
+    <string name="time_task_finish_behavior_after">留在原地</string>
+    <string name="time_task_finish_back">回待命点</string>
+    <string name="time_task_create_task">创建任务</string>
+    <string name="time_task_init_time">00:00</string>
+    <string name="time_task_cycle_time">设置重复</string>
+    <string name="time_task_name">名称</string>
+    <string name="time_task_input_name">请输入任务名称</string>
+    <string name="time_task_choose_task">选择任务</string>
+    <string name="time_task_choose_work_model">选择工作模式</string>
+    <string name="time_task_set_cycle_count">设置任务循环次数</string>
+    <string name="time_task_less">-</string>
+    <string name="time_task_add">+</string>
+    <string name="time_task_cycle_count_1">1</string>
+    <string name="time_task_finish_tips">任务结束后</string>
+
+    <!--关于机器人-->
+    <string name="upper_software">工控机软件版本</string>
+    <string name="lower_software">嵌入式软件版本</string>
+    <string name="tx_software">TX2软件版本</string>
+    <string name="app_version">APP版本</string>
+
+    <string name="onekey_charge">一键充电</string>
+    <string name="onekey_exit">一键退出</string>
+    <string name="no_search">没有搜到相关内容</string>
+
+    <!-- 星期列表   -->
+    <string name="Monday">周一</string>
+    <string name="Tuesday">周二</string>
+    <string name="Wednesday">周三</string>
+    <string name="Thursday">周四</string>
+    <string name="Friday">周五</string>
+    <string name="Saturday">周六</string>
+    <string name="Sunday">周日</string>
+
+    <!--  GPI数据  -->
+    <string name="in1_up">IN1上升沿</string>
+    <string name="in1_down">IN1下降沿</string>
+    <string name="in2_up">IN2上升沿</string>
+    <string name="in2_down">IN2下降沿</string>
+    <string name="in3_up">IN3上升沿</string>
+    <string name="in3_down">IN3下降沿</string>
+    <string name="in4_up">IN4上升沿</string>
+    <string name="in4_down">IN4下降沿</string>
+    <string name="in5_up">IN5上升沿</string>
+    <string name="in5_down">IN5下降沿</string>
+    <string name="in6_up">IN6上升沿</string>
+    <string name="in6_down">IN6下降沿</string>
+    <string name="in7_up">IN7上升沿</string>
+    <string name="in7_down">IN7下降沿</string>
+    <string name="in8_up">IN8上升沿</string>
+    <string name="in8_down">IN8下降沿</string>
+
+    <!--    工作模式-->
+    <string name="work_model_add">＋新增</string>
+    <string name="work_model_work_logic">工作逻辑</string>
+    <string name="work_model">工作模式</string>
+    <string name="work_model_tips">*仅限当前应用的地图</string>
+    <string name="work_model_after_gpi_input">检测到GPI输入后</string>
+    <string name="work_model_execute">则执行</string>
+    <string name="work_model_edit">编辑工作模式</string>
+    <string name="work_model_name">名称</string>
+    <string name="work_model_input_name">请输入名称</string>
+    <string name="work_model_cancel">取消</string>
+    <string name="work_model_save">保持</string>
+    <string name="work_model_select_gpi">选择沿口</string>
+    <string name="work_model_script_task">脚本任务</string>
+    <string name="work_model_choose_task">选择任务</string>
+    <string name="work_mode">工作模式设置</string>
+    <string name="stop_timed_task">暂停任务</string>
+    <string name="continue_timed_task">继续任务</string>
+    <string name="finish_timed_task">终止任务</string>
+    <string name="work_model_add_gpi">＋新增GPI</string>
+    <string name="work_model_choose_gpi">选择GPI</string>
+    <!--    通用-->
+    <string name="common_create">+ 创建</string>
+    <string name="common_space">&#12288;</string>
+    <string name="common_space_three_parameter">%1$s&#12288;%2$s&#12288;%3$s</string>
+    <string name="common_select_all">全选</string>
+    <string name="common_null">空</string>
+    <string name="common_hour">时</string>
+    <string name="common_min">分</string>
+</resources>

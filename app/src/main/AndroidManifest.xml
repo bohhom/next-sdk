@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.bozhon.sdk.next.one">
+
+    <application
+        android:name=".NextApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/MyAppTheme">
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="landscape">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".CreateMapActivity"
+            android:screenOrientation="landscape" />
+
+        <activity
+            android:name=".GpsActivity"
+            android:screenOrientation="landscape" />
+
+        <activity
+            android:name=".PointInitActivity"
+            android:screenOrientation="landscape" />
+
+        <activity
+            android:name=".PointNavActivity"
+            android:screenOrientation="landscape" />
+
+        <activity
+            android:name=".VirtualWallActivity"
+            android:screenOrientation="landscape" />
+
+        <activity
+            android:name=".EaseActivity"
+            android:screenOrientation="landscape" />
+
+        <activity
+            android:name=".RobotSpeedActivity"
+            android:screenOrientation="landscape" />
+
+        <activity
+            android:name=".MapOperateActivity"
+            android:screenOrientation="landscape" />
+
+
+        <activity
+            android:name=".CreateMapExpandActivity"
+            android:screenOrientation="landscape" />
+
+        <activity
+            android:name=".RobotStatusActivity"
+            android:screenOrientation="landscape" />
+
+        <activity
+            android:name=".MapTaskActivity"
+            android:screenOrientation="landscape" />
+    </application>
+
+</manifest>

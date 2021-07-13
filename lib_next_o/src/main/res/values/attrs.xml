@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="type_header" type="integer" />
+    <item name="type_footer" type="integer" />
+    <item name="type_child" type="integer" />
+    <item name="type_empty" type="integer" />
+
+    <declare-styleable name="RockerView">
+        <attr name="areaBackground" format="color|reference" />
+        <attr name="rockerBackground" format="color|reference" />
+        <attr name="rockerScale" format="float"/>
+        <attr name="rockerSpeedLevel" format="integer" />
+        <attr name="rockerCallBackMode">
+            <flag name="CALL_BACK_MODE_MOVE" value="0" />
+            <flag name="CALL_BACK_MODE_STATE_CHANGE" value="1" />
+        </attr>
+    </declare-styleable>
+
+
+    <!--BatteryView-->
+    <declare-styleable name="Battery">
+        <attr name="batteryOrientation">
+            <enum name="horizontal" value="0"/>
+            <enum name="vertical" value="1"/>
+        </attr>
+        <attr name="batteryColor" format="color"/>
+        <attr name="batteryPower" format="integer"/>
+    </declare-styleable>
+</resources>

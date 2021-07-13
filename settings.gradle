@@ -1,0 +1,3 @@
+rootProject.name = "Next_1.0"
+include ':app'
+include ':lib_next_o',':lib_logger'

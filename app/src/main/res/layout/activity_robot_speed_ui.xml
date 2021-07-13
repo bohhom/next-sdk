@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.lib.sdk.next.NextMapView
+        android:id="@+id/next_map_view"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" />
+
+    <Button
+        android:id="@+id/robot_get_speed_btn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="获取机器人速度" />
+
+
+
+    <Button
+        android:id="@+id/robot_set_speed_btn"
+        app:layout_constraintEnd_toEndOf="@id/robot_get_speed_btn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/robot_get_speed_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="设置机器人速度"
+        />
+
+
+    <EditText
+        android:id="@+id/robot_line_value_ed"
+        android:layout_width="200dp"
+        android:inputType="number|numberDecimal"
+        android:hint="线速度"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/robot_set_speed_btn"
+        app:layout_constraintTop_toTopOf="@id/robot_set_speed_btn"
+        app:layout_constraintBottom_toBottomOf="@id/robot_set_speed_btn"
+        />
+
+    <EditText
+        android:id="@+id/robot_value_ed"
+        android:layout_width="200dp"
+        android:inputType="number|numberDecimal"
+        android:hint="角速度"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/robot_line_value_ed"
+        app:layout_constraintTop_toBottomOf="@id/robot_line_value_ed"
+        app:layout_constraintEnd_toEndOf="@id/robot_line_value_ed"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

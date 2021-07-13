@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.lib.sdk.next.o.map.widget.CustomFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/custom_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.lib.sdk.next.o.map.widget.MapDrawView
+        android:id="@+id/map_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+    <com.lib.sdk.next.creater.RockerView
+        android:id="@+id/robot_rocker_view"
+        android:layout_width="@dimen/dp_200"
+        android:layout_height="@dimen/dp_200"
+        android:layout_gravity="bottom|left"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginBottom="@dimen/dp_10"
+        app:areaBackground="@drawable/rocker_base"
+        app:rockerBackground="@drawable/rocker"
+        app:rockerCallBackMode="CALL_BACK_MODE_MOVE"
+        app:rockerScale="0.5"
+        app:rockerSpeedLevel="10" />
+</com.lib.sdk.next.o.map.widget.CustomFrameLayout>
