@@ -19,7 +19,9 @@ package com.lib.sdk.next.robot;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
+import com.bozh.logger.Logger;
 import com.lib.sdk.next.life.LifecycleListener;
 import com.lib.sdk.next.livedata.EventConstant;
 import com.lib.sdk.next.livedata.LiveDataBus;
@@ -69,8 +71,13 @@ public class RobotHelper{
      * 注册机器人状态
      */
     public  void registerRobotStatus(Context context, IRobotStatusCallBack callBack){
+        String singleKey =   context.getClass().getSimpleName();
+        if (!isExit(singleKey)) {
+            EventBus.getDefault().register(this);
+            Logger.i("RobotHelper register key is  %s,robot is register",singleKey);
+        }
         pendingHashMap.put(context.getClass().getSimpleName(),callBack);
-        EventBus.getDefault().register(this);
+
         RobotErrorStatusService.start(GlobalOperate.getApp(), RequestManager.mSocketBaseUrl ,SocketRequestInterface.ROBOT_ERROR_STATUS);
         RobotNavigationStatusService.start(GlobalOperate.getApp(), RequestManager.mSocketBaseUrl ,SocketRequestInterface.ROBOT_NAVIGATION_STATUS);
         RobotStatusService.start(GlobalOperate.getApp(), RequestManager.mSocketBaseUrl ,SocketRequestInterface.ROBOT_STATUS);
@@ -184,5 +191,18 @@ public class RobotHelper{
             tail = iterator.next();
         }
         return tail;
+    }
+
+    private boolean isExit(String key){
+        Iterator<Map.Entry<String, IRobotStatusCallBack>> iterator = pendingHashMap.entrySet().iterator();
+
+        while(iterator.hasNext())
+        {
+            Map.Entry entry = iterator.next();
+            if(entry.getKey().equals(key)){
+                return true;
+            }
+        }
+        return false;
     }
 }
