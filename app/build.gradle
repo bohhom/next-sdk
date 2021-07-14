@@ -41,6 +41,9 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    implementation project(path: ':lib_next_o')
+    implementation 'io.github.bohhom:next-sdk:1.0.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.3.0'
+    implementation 'com.tamic.novate:novate:1.5.5'
+    implementation 'org.greenrobot:eventbus:3.2.0'
 
 }
