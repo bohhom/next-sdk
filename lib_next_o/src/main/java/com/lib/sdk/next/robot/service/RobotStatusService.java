@@ -30,6 +30,7 @@ import com.lib.sdk.next.livedata.LiveDataBus;
 import com.lib.sdk.next.o.R;
 import com.lib.sdk.next.global.GlobalOperate;
 import com.lib.sdk.next.o.map.event.RobotStatusEvent;
+import com.lib.sdk.next.robot.bean.RobotPostionBean;
 import com.lib.sdk.next.robot.bean.RobotStatusBean;
 import com.lib.sdk.next.robot.constant.RobotConstant;
 import com.lib.sdk.next.socket.CustomSocketListener;
@@ -97,6 +98,34 @@ public class RobotStatusService extends WebSocketService {
                         RobotConstant.mRobotStatusBean.setPositionJson(data.getString("position"));
                         RobotConstant.mRobotStatusBean.setBatteryState(data.getInt("battery_state"));
                         RobotConstant.mRobotStatusBean.setIoStatusJson(new JSONObject(data.optString("io_status")));
+
+                        try {
+                            JSONObject positionObject = data.getJSONObject("position");
+                            double worldX = positionObject.getDouble("x");
+                            double worldY = positionObject.getDouble("y");
+                            double theta = positionObject.getDouble("theta");
+                            RobotPostionBean robotPostionBean = new RobotPostionBean();
+                            robotPostionBean.setWorldX(worldX);
+                            robotPostionBean.setWorldY(worldY);
+                            robotPostionBean.setTheta(theta);
+                            RobotConstant.mRobotStatusBean.setRobotPostionBean(robotPostionBean);
+                        } catch (JSONException jsonException) {
+                            jsonException.printStackTrace();
+                        }
+
+                        try {
+                            JSONObject speedObject = data.getJSONObject("speed");
+                            double speedTheta = speedObject.getDouble("speed_theta");
+                            double speedX = speedObject.getDouble("speed_x");
+                            RobotConstant.mRobotStatusBean.setAngularSpeed(speedTheta);
+                            RobotConstant.mRobotStatusBean.setLineSpeed(speedX);
+                        } catch (JSONException jsonException) {
+                            jsonException.printStackTrace();
+                        }
+
+
+
+
 
                         RobotStatusEvent statusEvent = new RobotStatusEvent();
                         statusEvent.setCode(NextException.CODE_NEXT_SUCCESS);

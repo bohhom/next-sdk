@@ -69,11 +69,11 @@ public class RobotStatusBean {
     /**
      * 机器人线速度(百分比)
      */
-    private float mLineSpeed = 0;
+    private double mLineSpeed = 0;
     /**
      * 机器人角速度(百分比)
      */
-    private float mAngularSpeed = 0;
+    private double mAngularSpeed = 0;
     /**
      * 电量阈值
      */
@@ -96,6 +96,21 @@ public class RobotStatusBean {
      * 机器人位置服务器Json数据
      */
     private String positionJson = "";
+
+
+    /**
+     * 机器人位置服务器Json数据
+     */
+    private RobotPostionBean robotPostionBean;
+
+    public RobotPostionBean getRobotPostionBean() {
+        return robotPostionBean;
+    }
+
+    public void setRobotPostionBean(RobotPostionBean robotPostionBean) {
+        this.robotPostionBean = robotPostionBean;
+    }
+
     /**
      * io状态
      */
@@ -157,19 +172,19 @@ public class RobotStatusBean {
         mGlobalStatusMsg = globalStatusMsg;
     }
 
-    public float getLineSpeed() {
+    public double getLineSpeed() {
         return mLineSpeed;
     }
 
-    public void setLineSpeed(float lineSpeed) {
+    public void setLineSpeed(double lineSpeed) {
         mLineSpeed = lineSpeed;
     }
 
-    public float getAngularSpeed() {
+    public double getAngularSpeed() {
         return mAngularSpeed;
     }
 
-    public void setAngularSpeed(float angularSpeed) {
+    public void setAngularSpeed(double angularSpeed) {
         mAngularSpeed = angularSpeed;
     }
 
