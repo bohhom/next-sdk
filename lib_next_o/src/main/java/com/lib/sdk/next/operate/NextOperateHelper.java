@@ -36,6 +36,48 @@ public class NextOperateHelper extends IBaseHelper<NextOperatePresenter> impleme
 
     private IRobotOperateListener mIRobotOperateListener;
 
+    private int mCurrentType = COMMAND_LOAD_SCRIPT_NAME;
+
+    /**
+     * 装载执行脚本名
+     */
+    public final static int COMMAND_LOAD_SCRIPT_NAME = 0;
+
+    /**
+     * 装载执行脚本内容
+     */
+    public final static int COMMAND_LOAD_SCRIPT_CONTEXT = 1;
+
+    /**
+     * 执行
+     */
+    public final static int COMMAND_ACTION = 2;
+
+    /**
+     * 复位
+     */
+    public final static int COMMAND_REST = 3;
+
+    /**
+     * 停止
+     */
+    public final static int COMMAND_STOP = 4;
+
+    /**
+     * 停止并复位
+     */
+    public final static int COMMAND_STOP_REST = 5;
+
+    /**
+     * 单步
+     */
+    public final static int COMMAND_STEP = 6;
+
+    /**
+     * 推送最新Feedback
+     */
+    public final static int COMMAND_FEED = 7;
+
     public static NextOperateHelper getInstance() {
         if (mInstance == null) {
             synchronized (NextOperateHelper.class) {
@@ -87,89 +129,106 @@ public class NextOperateHelper extends IBaseHelper<NextOperatePresenter> impleme
 
     @Override
     public void startTaskDataCallBack(HttpResponse data) {
-        if(mIRobotOperateListener!=null){
+        if (mIRobotOperateListener != null) {
             if (data.code == 0) {
-                mIRobotOperateListener.onCommandResult(new NextResultInfo(data.code,data.info));
+                mIRobotOperateListener.onCommandResult(mCurrentType,new NextResultInfo(data.code, data.info));
             } else {
-                switch (data.code){
+                switch (data.code) {
                     case 1:
-                        mIRobotOperateListener.onCommandResult(new NextResultInfo(NextException.COMMAND_PARAM_ERROR,data.info));
+                        mIRobotOperateListener.onCommandResult(mCurrentType,new NextResultInfo(NextException.COMMAND_PARAM_ERROR, data.info));
                         break;
                     case 2:
-                        mIRobotOperateListener.onCommandResult(new NextResultInfo(NextException.COMMAND_ONOFF_ERROR,data.info));
+                        mIRobotOperateListener.onCommandResult(mCurrentType,new NextResultInfo(NextException.COMMAND_ONOFF_ERROR, data.info));
                         break;
                     case 3:
-                        mIRobotOperateListener.onCommandResult(new NextResultInfo(NextException.COMMAND_UUID_ERROR,data.info));
+                        mIRobotOperateListener.onCommandResult(mCurrentType,new NextResultInfo(NextException.COMMAND_UUID_ERROR, data.info));
                         break;
                     case 4:
-                        mIRobotOperateListener.onCommandResult(new NextResultInfo(NextException.COMMAND_CONTEXT_ERROR,data.info));
+                        mIRobotOperateListener.onCommandResult(mCurrentType,new NextResultInfo(NextException.COMMAND_CONTEXT_ERROR, data.info));
                         break;
                     case 5:
-                        mIRobotOperateListener.onCommandResult(new NextResultInfo(NextException.COMMAND_NOT_EXIT,data.info));
+                        mIRobotOperateListener.onCommandResult(mCurrentType,new NextResultInfo(NextException.COMMAND_NOT_EXIT, data.info));
                         break;
                     case 6:
-                        mIRobotOperateListener.onCommandResult(new NextResultInfo(NextException.COMMAND_INPUT_NULL,data.info));
+                        mIRobotOperateListener.onCommandResult(mCurrentType,new NextResultInfo(NextException.COMMAND_INPUT_NULL, data.info));
                         break;
                     case 7:
-                        mIRobotOperateListener.onCommandResult(new NextResultInfo(NextException.COMMAND_TASK_ERROR,data.info));
+                        mIRobotOperateListener.onCommandResult(mCurrentType,new NextResultInfo(NextException.COMMAND_TASK_ERROR, data.info));
                         break;
                     case 8:
-                        mIRobotOperateListener.onCommandResult(new NextResultInfo(NextException.COMMAND_AL_ERROR,data.info));
+                        mIRobotOperateListener.onCommandResult(mCurrentType,new NextResultInfo(NextException.COMMAND_AL_ERROR, data.info));
                         break;
                     case 9:
-                        mIRobotOperateListener.onCommandResult(new NextResultInfo(NextException.COMMAND_BUSY_ERROR,data.info));
+                        mIRobotOperateListener.onCommandResult(mCurrentType,new NextResultInfo(NextException.COMMAND_BUSY_ERROR, data.info));
                         break;
 
                     case 10:
-                        mIRobotOperateListener.onCommandResult(new NextResultInfo(NextException.COMMAND_LOW_ERROR,data.info));
+                        mIRobotOperateListener.onCommandResult(mCurrentType,new NextResultInfo(NextException.COMMAND_LOW_ERROR, data.info));
                         break;
                     default:
-                        mIRobotOperateListener.onCommandResult(new NextResultInfo(data.code,data.info));
+                        mIRobotOperateListener.onCommandResult(mCurrentType,new NextResultInfo(data.code, data.info));
                         break;
                 }
             }
         }
-
+        mCurrentType = COMMAND_LOAD_SCRIPT_NAME;
     }
 
-    public void onRestTask(){
+    /**
+     * 停止并且复位
+     */
+    public void onRestAndStopCommand() {
+        mCurrentType = COMMAND_STOP_REST;
         HashMap<String, Object> params = new HashMap<>();
         params.put("script_name", "");
-        params.put("type", 5);
+        params.put("type", COMMAND_STOP_REST);
+        mPresenter.startTask(HttpUri.URL_RUN_TASK_COMMAND, params);
+    }
+
+
+    /**
+     * 机器人复位
+     */
+    public void onRestCommand() {
+        mCurrentType = COMMAND_REST;
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("script_name", "");
+        params.put("type", COMMAND_REST);
         mPresenter.startTask(HttpUri.URL_RUN_TASK_COMMAND, params);
     }
 
     /**
      * 2d导航
+     *
      * @param worldX 世界坐标
      * @param worldY
      * @param theta  方向角标
      */
-    public void on2DNavGoal(double worldX,double worldY, double theta){
+    public void on2DNavGoal(double worldX, double worldY, double theta) {
         HashMap<String, Object> params = new HashMap<>();
         params.put("x", worldX);
         params.put("y", worldY);
         params.put("theta", theta);
-        mPresenter.request2DNavGoal(HttpUri.URL_SYNC_2DNavGoal,params);
+        mPresenter.request2DNavGoal(HttpUri.URL_SYNC_2DNavGoal, params);
     }
 
     /**
      * 取消2d导航
      */
-    public void on2DNavCancel(){
+    public void on2DNavCancel() {
         HashMap<String, Object> params = new HashMap<>();
-        mPresenter.request2DNavCancel(HttpUri.URL_SYNC_2DNavCANCEL,params);
+        mPresenter.request2DNavCancel(HttpUri.URL_SYNC_2DNavCANCEL, params);
     }
 
-    public void setRobotOperateListener(IRobotOperateListener robotOperateListener){
+    public void setRobotOperateListener(IRobotOperateListener robotOperateListener) {
         this.mIRobotOperateListener = robotOperateListener;
     }
 
-    public interface IRobotOperateListener{
+    public interface IRobotOperateListener {
         void onSet2DNavResult(NextResultInfo resultInfo);
 
         void onCancel2DNavResult(NextResultInfo resultInfo);
 
-        void onCommandResult(NextResultInfo resultInfo);
+        void onCommandResult(int type,NextResultInfo resultInfo);
     }
 }
