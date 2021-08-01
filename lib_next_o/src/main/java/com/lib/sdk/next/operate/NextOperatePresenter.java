@@ -15,6 +15,7 @@ along with next-sdk.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.lib.sdk.next.operate;
 
+import com.lib.sdk.next.gps.LocationHelper;
 import com.lib.sdk.next.o.http.BaseDataCallback;
 import com.lib.sdk.next.o.http.HttpResponse;
 import com.lib.sdk.next.o.map.model.CustomModel;
@@ -84,6 +85,29 @@ import java.util.HashMap;
             @Override
             public void dataCallback(HttpResponse data) {
                 ((NextOperateHelper) getHelper()).startTaskDataCallBack(data);
+            }
+        });
+    }
+
+    /**
+     * 初始化定位
+     * @param url
+     * @param params
+     */
+    public void initLocationForce(String url, HashMap<String, Object> params) {
+        realGetData(DataModel.invoke(CustomModel.class).params(params), url, new BaseDataCallback<HttpResponse>() {
+            @Override
+            public void dataCallback(HttpResponse data) {
+                ((NextOperateHelper) getHelper()).initLocationDataCallBack(data);
+            }
+        });
+    }
+
+    public void initLocation(String url, HashMap<String, Object> params) {
+        realGetData(DataModel.invoke(CustomModel.class).params(params), url, new BaseDataCallback<HttpResponse>() {
+            @Override
+            public void dataCallback(HttpResponse data) {
+                ((NextOperateHelper) getHelper()).initLocationDataCallBack(data);
             }
         });
     }

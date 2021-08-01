@@ -22,7 +22,7 @@ import com.lib.sdk.next.o.http.HttpResponse;
  * Created by aruba on 2020/5/11.
  */
 
-interface InitLocationCallBack {
+public interface InitLocationCallBack {
 
     void initLocationDataCallBack(HttpResponse data);
 }

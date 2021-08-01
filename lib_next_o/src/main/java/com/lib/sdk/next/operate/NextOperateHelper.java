@@ -15,9 +15,12 @@ along with next-sdk.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.lib.sdk.next.operate;
 
+import com.bozh.logger.Logger;
 import com.lib.sdk.next.NextException;
 import com.lib.sdk.next.NextResultInfo;
 import com.lib.sdk.next.base.IBaseHelper;
+import com.lib.sdk.next.gps.CoordEntry;
+import com.lib.sdk.next.gps.InitLocationCallBack;
 import com.lib.sdk.next.o.http.HttpResponse;
 import com.lib.sdk.next.o.map.net.HttpUri;
 import com.lib.sdk.next.o.map.widget.MapDrawView;
@@ -30,11 +33,14 @@ import java.util.HashMap;
  * Date: 2021/6/30 11:44
  * Description: 任务操作
  */
-public class NextOperateHelper extends IBaseHelper<NextOperatePresenter> implements INextOperateCallBack {
+public class NextOperateHelper extends IBaseHelper<NextOperatePresenter> implements INextOperateCallBack, InitLocationCallBack {
+
 
     private static volatile NextOperateHelper mInstance;
 
     private IRobotOperateListener mIRobotOperateListener;
+
+    private IRobotLocationListener mIRobotLocationListener;
 
     private int mCurrentType = COMMAND_LOAD_SCRIPT_NAME;
 
@@ -77,6 +83,22 @@ public class NextOperateHelper extends IBaseHelper<NextOperatePresenter> impleme
      * 推送最新Feedback
      */
     public final static int COMMAND_FEED = 7;
+
+
+
+    private int mInitLocationType = LOCATION_SMART  ;
+
+    /**
+     * 智能初始化定位
+     */
+    public static final int  LOCATION_SMART = 0;
+
+    /**
+     * 强制初始化
+     */
+    public static final int  LOCATION_ENFORCE = 1;
+
+
 
     public static NextOperateHelper getInstance() {
         if (mInstance == null) {
@@ -224,11 +246,62 @@ public class NextOperateHelper extends IBaseHelper<NextOperatePresenter> impleme
         this.mIRobotOperateListener = robotOperateListener;
     }
 
+    /**
+     * 智能初始化定位
+     * @param worldX
+     * @param worldY
+     * @param theta
+     */
+    public void onSmartLocation(double worldX,double worldY,double theta){
+        Logger.d("智能初始化定位操作");
+        mInitLocationType = LOCATION_SMART;
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("x", worldX);
+        params.put("y", worldY);
+        params.put("theta", theta);
+        mPresenter.initLocation(HttpUri.URL_INIT_LOCATION, params);
+    }
+
+
+
+    /**
+     * 强制初始化定位
+     * @param worldX
+     * @param worldY
+     * @param theta
+     */
+    public void onEnforceLocation(double worldX,double worldY,double theta){
+        Logger.d("强制初始化定位操作");
+        mInitLocationType = LOCATION_ENFORCE;
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("x", worldX);
+        params.put("y", worldY);
+        params.put("theta", theta);
+        mPresenter.initLocationForce(HttpUri.URL_INIT_LOCATION_FORCE, params);
+    }
+
+    public void setRobotLocationListener( IRobotLocationListener locationListener) {
+        this.mIRobotLocationListener = locationListener;
+    }
+
+    @Override
+    public void initLocationDataCallBack(HttpResponse data) {
+        mIRobotLocationListener.onLocationResult(mInitLocationType,new NextResultInfo(data.code,data.info));
+    }
+
     public interface IRobotOperateListener {
         void onSet2DNavResult(NextResultInfo resultInfo);
 
         void onCancel2DNavResult(NextResultInfo resultInfo);
 
         void onCommandResult(int type,NextResultInfo resultInfo);
+    }
+
+
+    /**
+     * 初始化定位回调
+     */
+    public interface IRobotLocationListener {
+        void onLocationResult(int type,NextResultInfo resultInfo);
     }
 }

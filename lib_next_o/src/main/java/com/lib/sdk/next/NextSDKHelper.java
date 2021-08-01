@@ -20,6 +20,7 @@ import com.bozh.logger.LogStrategy;
 import com.bozh.logger.Logger;
 import com.bozh.logger.PrettyFormatStrategy;
 import com.lib.sdk.next.global.GlobalOperate;
+import com.lib.sdk.next.o.map.bean.PositionPointBean;
 import com.lib.sdk.next.o.map.bean.ProjectInfoBean;
 import com.lib.sdk.next.o.map.manager.ProjectCacheManager;
 import com.lib.sdk.next.o.map.manager.RequestManager;
@@ -193,6 +194,15 @@ public class NextSDKHelper {
      */
     public double  getMapOriginY(Context context, String projectId) {
         return ProjectCacheManager.getMapOriginY(context, projectId);
+    }
+
+
+    /**
+     * 获取当前工程所有点
+     * @return
+     */
+    public List<PositionPointBean> getCurrentAllPositions(String projectId) {
+        return ProjectCacheManager.getAllPositionInfo(GlobalOperate.getApp(), projectId);
     }
 
 }
