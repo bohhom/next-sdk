@@ -55,7 +55,7 @@ public abstract class IBaseHelper<T extends  BasePresenter> {
     /**
      * 显示请求错误提示
      */
-   public abstract void showErr(String uri, String msg);
+   public abstract void showErr(String uri,int code, String msg);
 
 
 

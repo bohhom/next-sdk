@@ -16,6 +16,7 @@ along with next-sdk.  If not, see <http://www.gnu.org/licenses/>.
 package com.lib.sdk.next.callback;
 
 import com.lib.sdk.next.NextResultInfo;
+import com.lib.sdk.next.base.IBaseCallBack;
 
 /**
  * FileName: IPullProjectCallBack
@@ -23,11 +24,10 @@ import com.lib.sdk.next.NextResultInfo;
  * Date: 2021/7/1 15:12
  * Description: 拉取数据回调
  */
-public interface IPullProjectCallBack {
+public abstract class IPullProjectCallBack implements IBaseCallBack {
 
 
-    void onSuccess();
+    public abstract void onPullProjectResult(NextResultInfo resultInfo);
 
-    void onFail(NextResultInfo info);
 
 }

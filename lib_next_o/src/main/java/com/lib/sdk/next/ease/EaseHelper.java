@@ -19,6 +19,7 @@ import android.graphics.Point;
 
 import com.bozh.logger.Logger;
 import com.lib.sdk.next.NextResultInfo;
+import com.lib.sdk.next.base.IBaseCallBack;
 import com.lib.sdk.next.base.IBaseHelper;
 import com.lib.sdk.next.base.NxMap;
 import com.lib.sdk.next.o.http.HttpResponse;
@@ -57,8 +58,8 @@ public class EaseHelper extends IBaseHelper<EasePresenter> implements EaseUpdate
 
 
     @Override
-    public void showErr(String uri, String msg) {
-
+    public void showErr(String uri, int code, String msg) {
+        mEaseListener.onHttpError(uri, code, msg);
     }
 
     @Override
@@ -96,7 +97,7 @@ public class EaseHelper extends IBaseHelper<EasePresenter> implements EaseUpdate
      */
     public void updateMapPixmap() {
 
-        if(mCurrentProjectId.equals("")){
+        if (mCurrentProjectId.equals("")) {
             Logger.e("橡皮擦未进行初始化");
             return;
         }
@@ -175,9 +176,9 @@ public class EaseHelper extends IBaseHelper<EasePresenter> implements EaseUpdate
         this.mEaseListener = easeListener;
     }
 
-    public interface IEaseListener {
+    public abstract static class IEaseListener implements IBaseCallBack {
 
-        void onResult(NextResultInfo resultInfo);
+        public abstract void onResult(NextResultInfo resultInfo);
     }
 
 }

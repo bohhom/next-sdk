@@ -116,6 +116,11 @@ public class CreateMapHelper extends IBaseHelper<CreateMapPresener> implements I
 
     }
 
+    @Override
+    public void showErr(String uri, int code, String msg) {
+
+    }
+
     public static CreateMapHelper getInstance() {
         if (mInstance == null) {
             synchronized (CreateMapHelper.class) {
@@ -164,10 +169,6 @@ public class CreateMapHelper extends IBaseHelper<CreateMapPresener> implements I
     }
 
 
-    @Override
-    public void showErr(String uri, String msg) {
-
-    }
 
 
     @Override

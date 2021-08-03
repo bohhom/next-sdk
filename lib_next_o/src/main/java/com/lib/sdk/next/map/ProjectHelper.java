@@ -19,6 +19,7 @@ import android.text.TextUtils;
 
 import com.lib.sdk.next.NextException;
 import com.lib.sdk.next.NextResultInfo;
+import com.lib.sdk.next.base.IBaseCallBack;
 import com.lib.sdk.next.base.IBaseHelper;
 import com.lib.sdk.next.o.http.HttpResponse;
 import com.lib.sdk.next.global.GlobalOperate;
@@ -78,9 +79,10 @@ public class ProjectHelper extends IBaseHelper<MapPresenter> implements IProject
     }
 
     @Override
-    public void showErr(String uri, String msg) {
-
+    public void showErr(String uri, int code, String msg) {
+        iMmapOperResultListener.onHttpError(uri, code, msg);
     }
+
 
     @Override
     protected void attachView(MapDrawView drawView) {
@@ -280,15 +282,15 @@ public class ProjectHelper extends IBaseHelper<MapPresenter> implements IProject
 
     }
 
-    public interface IMapOperResultListener {
+    public abstract static class IMapOperResultListener implements IBaseCallBack {
 
-        void onChangeProjectResult(NextResultInfo resultInfo);
+        public abstract void onChangeProjectResult(NextResultInfo resultInfo);
 
-        void onChangeProjectName(NextResultInfo resultInfo);
+        public abstract void onChangeProjectName(NextResultInfo resultInfo);
 
-        void onUploadProject(NextResultInfo resultInfo);
+        public abstract void onUploadProject(NextResultInfo resultInfo);
 
-        void onDeleteProject(NextResultInfo resultInfo);
+        public abstract void onDeleteProject(NextResultInfo resultInfo);
 
     }
 }

@@ -57,7 +57,7 @@ public class RobotNavigationStatusService extends WebSocketService {
 
             @Override
             public void onMessage(WebSocket webSocket, String text) {
-                Log.e(TAG, "onMessage" + text);
+                //Log.d(TAG, "onMessage" + text);
                 try {
                     JSONObject res = new JSONObject(text);
                     int code = res.getInt("result_code");

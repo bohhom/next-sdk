@@ -222,7 +222,6 @@ public class ProjectCacheManager {
      */
     public static String getProjectCacheDirPath(Context context) {
         String projectCacheDirPath = context.getExternalFilesDir("").getAbsolutePath() + File.separator + PROJECT_CACHE_DIR_NAME;
-        Logger.i ( "getProjectCacheDirPath：" + projectCacheDirPath);
         return projectCacheDirPath;
     }
 
@@ -302,7 +301,7 @@ public class ProjectCacheManager {
      */
     public static String getMapInfoCacheDirPath(Context context) {
         String mapInfoCacheDirPath = getProjectCacheDirPath(context) + File.separator + MAP_INFO_CACHE_DIR_NAME;
-        Logger.i ( "getMapInfoCacheDirPath：" + mapInfoCacheDirPath);
+      //  Logger.i ( "getMapInfoCacheDirPath：" + mapInfoCacheDirPath);
         return mapInfoCacheDirPath;
     }
 
@@ -315,7 +314,6 @@ public class ProjectCacheManager {
      */
     public static String getMapInfoFilePath(Context context, String projectId) {
         String mapInfoFilePath = getMapInfoCacheDirPath(context) + File.separator + projectId + "_" + MAP_INFO_FILE_NAME;
-        Logger.i ( "getMapInfoFilePath：" + mapInfoFilePath);
         return mapInfoFilePath;
     }
 
@@ -1149,7 +1147,7 @@ public class ProjectCacheManager {
         String content = "";
         String mapInfoFilePath = getMapInfoFilePath(context, projectId);
         content = FileIOUtil.readFile2String(mapInfoFilePath);
-        Logger.i ( "getMapInfoCacheFileOriContent：" + content + "");
+//        Log.i ( "getMapInfoCacheFileOriContent：" + content + "");
         return content;
     }
 

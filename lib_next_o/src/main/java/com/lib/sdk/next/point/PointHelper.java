@@ -18,6 +18,7 @@ package com.lib.sdk.next.point;
 import android.util.Log;
 
 import com.lib.sdk.next.NextResultInfo;
+import com.lib.sdk.next.base.IBaseCallBack;
 import com.lib.sdk.next.base.IBaseHelper;
 import com.lib.sdk.next.base.NxMap;
 import com.lib.sdk.next.o.http.HttpResponse;
@@ -99,8 +100,8 @@ public class PointHelper extends IBaseHelper<PointPresenter> implements IPushSyn
 
 
     @Override
-    public void showErr(String uri, String msg) {
-
+    public void showErr(String uri, int code, String msg) {
+        mINavPointListener.onHttpError(uri,code,msg);
     }
 
     @Override
@@ -537,23 +538,23 @@ public class PointHelper extends IBaseHelper<PointPresenter> implements IPushSyn
         this.mINavPointListener = navPointListener;
     }
 
-    public interface INavPointListener{
+    public abstract static class INavPointListener implements IBaseCallBack {
 
-        void onCreateNavPointSuccess(PositionPointBean pointBean);
+        public abstract void onCreateNavPointSuccess(PositionPointBean pointBean);
 
-        void onCreateNavPointFail(NextResultInfo resultInfo);
+        public abstract void onCreateNavPointFail(NextResultInfo resultInfo);
 
-        void onEdNavPointSuccess(PositionPointBean pointBean);
+        public abstract void onEdNavPointSuccess(PositionPointBean pointBean);
 
-        void onEdNavPointFail(NextResultInfo resultInfo);
+        public abstract void onEdNavPointFail(NextResultInfo resultInfo);
 
-        void onUpdateNameSuccess(PositionPointBean pointBean);
+        public abstract void onUpdateNameSuccess(PositionPointBean pointBean);
 
-        void onUpdateNameFail(NextResultInfo resultInfo);
+        public abstract void onUpdateNameFail(NextResultInfo resultInfo);
 
-        void onDeleteSuccess();
+        public abstract void onDeleteSuccess();
 
-        void onDeleteFail(NextResultInfo resultInfo);
+        public abstract void onDeleteFail(NextResultInfo resultInfo);
 
     }
 }

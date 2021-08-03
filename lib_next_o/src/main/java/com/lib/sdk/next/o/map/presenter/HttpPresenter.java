@@ -61,7 +61,8 @@ public abstract class HttpPresenter  extends BasePresenter {
         }
 
         if(!getHelper().checkNetWork()){
-            getHelper().showErr(url, GlobalOperate.getApp().getString(R.string.not_found2));
+            getHelper().showErr(url,MyNovateException.NETWORD_ERROR, GlobalOperate.getApp().getString(R.string.not_found2));
+            return;
         }
 
         if (rxResultCallback == null) {
@@ -81,7 +82,7 @@ public abstract class HttpPresenter  extends BasePresenter {
 
                 @Override
                 public void onError(Object tag, Throwable e) {
-
+                    getHelper().showErr((String) tag,e.getCode(), e.getMessage());
                 }
 
                 @Override
@@ -99,11 +100,12 @@ public abstract class HttpPresenter  extends BasePresenter {
                             baseDataCallback.dataCallback(httpResponse);
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            getHelper().showErr((String) tag, e.getMessage());
+                            getHelper().showErr((String) tag,MyNovateException.FORMAT_JSON_ERROR,e.getMessage());
+
                         }
                     }
                     else{
-                        getHelper().showErr((String) tag, "未绑定实体类");
+                        getHelper().showErr((String) tag, MyNovateException.BIND_UNKNOWN_ERROR,"未绑定实体类");
                     }
                 }
 
@@ -112,11 +114,7 @@ public abstract class HttpPresenter  extends BasePresenter {
                 @Override
                 public void onCancel(Object tag, Throwable e) {
                     baseDataCallbackHashMap.remove(tag);
-                        Throwable newThrowable = getMyThrowable(e);
-                        if (newThrowable != null) {
-                            e = newThrowable;
-                        }
-                    getHelper().showErr((String) tag, e.getMessage());
+                    getHelper().showErr((String) tag, e.getCode(),e.getMessage());
                 }
 
             };
@@ -124,9 +122,5 @@ public abstract class HttpPresenter  extends BasePresenter {
         return defaultRxResultCallback;
     }
 
-    private Throwable getMyThrowable(Throwable e) {
-        Throwable newThrowable = MyNovateException.handleException(GlobalOperate.getApp(), e);
-        return newThrowable;
-    }
 
 }

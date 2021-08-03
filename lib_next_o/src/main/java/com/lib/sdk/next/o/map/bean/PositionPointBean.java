@@ -316,7 +316,7 @@ public class PositionPointBean implements Serializable {
         }
         float size = getSize();
 
-        Log.e(TAG, "resetBounds：" + mBitmap.getHeight() + "," + mBitmap.getWidth() + "," + mBitmap.getHeight() * 1.0 / mBitmap.getWidth());
+       // Log.e(TAG, "resetBounds：" + mBitmap.getHeight() + "," + mBitmap.getWidth() + "," + mBitmap.getHeight() * 1.0 / mBitmap.getWidth());
 
         rect.set(0, 0, (int) size, (int) (size * mBitmap.getHeight() / mBitmap.getWidth()));
 

@@ -58,6 +58,12 @@ public class ProjectInfoHelper  extends IBaseHelper<ProjectPresenter> implements
 
     }
 
+    @Override
+    public void showErr(String uri, int code, String msg) {
+        mIPullProjectCallBack.onHttpError(uri,code,msg);
+
+    }
+
     public static ProjectInfoHelper getInstance() {
         if (mInstance == null) {
             synchronized (ProjectInfoHelper.class) {
@@ -126,20 +132,16 @@ public class ProjectInfoHelper  extends IBaseHelper<ProjectPresenter> implements
                 }
 
             } else {
-                mIPullProjectCallBack.onFail(new NextResultInfo(code,info));
+                mIPullProjectCallBack.onPullProjectResult(new NextResultInfo(code,info));
 
             }
         } catch (JSONException e) {
             e.printStackTrace();
             Logger.e("获取项目更新失败， error = %s",e.getMessage());
-            mIPullProjectCallBack.onFail(new NextResultInfo(NextException.CODE_NEXT_JSON,e.getMessage()));
+            mIPullProjectCallBack.onPullProjectResult(new NextResultInfo(NextException.CODE_NEXT_JSON,e.getMessage()));
         }
     }
 
-    @Override
-    public void showErr(String uri, String msg) {
-
-    }
 
     @Override
     public void attachView(MapDrawView drawView) {
@@ -169,15 +171,15 @@ public class ProjectInfoHelper  extends IBaseHelper<ProjectPresenter> implements
                 mPresenter.syncProjectDataToLocal(projectArray, new IProjectSyncLocalBack() {
                     @Override
                     public void onSysncLocal() {
-                        mIPullProjectCallBack.onSuccess();
+                        mIPullProjectCallBack.onPullProjectResult(new NextResultInfo(code,info));
                     }
                 });
             } else {
-                mIPullProjectCallBack.onFail(new NextResultInfo(code,info));
+                mIPullProjectCallBack.onPullProjectResult(new NextResultInfo(code,info));
             }
         } catch (JSONException e) {
             e.printStackTrace();
-            mIPullProjectCallBack.onFail(new NextResultInfo(NextException.CODE_NEXT_JSON,e.getMessage()));
+            mIPullProjectCallBack.onPullProjectResult(new NextResultInfo(NextException.CODE_NEXT_JSON,e.getMessage()));
             Logger.e("保存项目到本地失败，错误信息，error = %s",e.getMessage());
         }
     }

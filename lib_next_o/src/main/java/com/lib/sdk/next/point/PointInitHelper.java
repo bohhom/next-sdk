@@ -65,11 +65,12 @@ public class PointInitHelper extends IBaseHelper<PointInitPresenter> implements 
     }
 
 
+
+
     @Override
-    public void showErr(String uri, String msg) {
+    public void showErr(String uri, int code, String msg) {
 
     }
-
 
     @Override
     public void attachView(MapDrawView drawView) {

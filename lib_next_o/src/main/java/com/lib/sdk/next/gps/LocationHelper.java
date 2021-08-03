@@ -94,7 +94,7 @@ public class LocationHelper extends IBaseHelper<RobotPresenter> implements  Init
 
 
     @Override
-    public void showErr(String uri, String msg) {
+    public void showErr(String uri, int code, String msg) {
 
     }
 

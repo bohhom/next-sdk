@@ -1822,7 +1822,7 @@ public class MapDrawView extends View {
                      canvas.drawPath(testPath, mRoutePaint);
                      */
                     //绘制航路
-                    Log.e("routelog", "航路个数= " + mRoutesList.size());
+//                    Log.e("routelog", "航路个数= " + mRoutesList.size());
                     for (int i = 0; i < mRoutesList.size(); i++) {
                         canvas.save();
                         RouteBean routeBean = mRoutesList.get(i);

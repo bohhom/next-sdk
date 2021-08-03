@@ -18,6 +18,7 @@ package com.lib.sdk.next.operate;
 import com.bozh.logger.Logger;
 import com.lib.sdk.next.NextException;
 import com.lib.sdk.next.NextResultInfo;
+import com.lib.sdk.next.base.IBaseCallBack;
 import com.lib.sdk.next.base.IBaseHelper;
 import com.lib.sdk.next.gps.CoordEntry;
 import com.lib.sdk.next.gps.InitLocationCallBack;
@@ -26,6 +27,7 @@ import com.lib.sdk.next.o.map.net.HttpUri;
 import com.lib.sdk.next.o.map.widget.MapDrawView;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * FileName: NextOperateHelper
@@ -43,6 +45,8 @@ public class NextOperateHelper extends IBaseHelper<NextOperatePresenter> impleme
     private IRobotLocationListener mIRobotLocationListener;
 
     private int mCurrentType = COMMAND_LOAD_SCRIPT_NAME;
+
+    private Map<String, IBaseCallBack> mCallBackMap = new HashMap<>();
 
     /**
      * 装载执行脚本名
@@ -85,19 +89,17 @@ public class NextOperateHelper extends IBaseHelper<NextOperatePresenter> impleme
     public final static int COMMAND_FEED = 7;
 
 
-
-    private int mInitLocationType = LOCATION_SMART  ;
+    private int mInitLocationType = LOCATION_SMART;
 
     /**
      * 智能初始化定位
      */
-    public static final int  LOCATION_SMART = 0;
+    public static final int LOCATION_SMART = 0;
 
     /**
      * 强制初始化
      */
-    public static final int  LOCATION_ENFORCE = 1;
-
+    public static final int LOCATION_ENFORCE = 1;
 
 
     public static NextOperateHelper getInstance() {
@@ -121,9 +123,11 @@ public class NextOperateHelper extends IBaseHelper<NextOperatePresenter> impleme
     }
 
     @Override
-    public void showErr(String uri, String msg) {
-
+    public void showErr(String uri, int code, String msg) {
+        IBaseCallBack callBack = mCallBackMap.remove(uri);
+        callBack.onHttpError(uri, code, msg);
     }
+
 
     @Override
     protected void attachView(MapDrawView drawView) {
@@ -153,42 +157,42 @@ public class NextOperateHelper extends IBaseHelper<NextOperatePresenter> impleme
     public void startTaskDataCallBack(HttpResponse data) {
         if (mIRobotOperateListener != null) {
             if (data.code == 0) {
-                mIRobotOperateListener.onCommandResult(mCurrentType,new NextResultInfo(data.code, data.info));
+                mIRobotOperateListener.onCommandResult(mCurrentType, new NextResultInfo(data.code, data.info));
             } else {
                 switch (data.code) {
                     case 1:
-                        mIRobotOperateListener.onCommandResult(mCurrentType,new NextResultInfo(NextException.COMMAND_PARAM_ERROR, data.info));
+                        mIRobotOperateListener.onCommandResult(mCurrentType, new NextResultInfo(NextException.COMMAND_PARAM_ERROR, data.info));
                         break;
                     case 2:
-                        mIRobotOperateListener.onCommandResult(mCurrentType,new NextResultInfo(NextException.COMMAND_ONOFF_ERROR, data.info));
+                        mIRobotOperateListener.onCommandResult(mCurrentType, new NextResultInfo(NextException.COMMAND_ONOFF_ERROR, data.info));
                         break;
                     case 3:
-                        mIRobotOperateListener.onCommandResult(mCurrentType,new NextResultInfo(NextException.COMMAND_UUID_ERROR, data.info));
+                        mIRobotOperateListener.onCommandResult(mCurrentType, new NextResultInfo(NextException.COMMAND_UUID_ERROR, data.info));
                         break;
                     case 4:
-                        mIRobotOperateListener.onCommandResult(mCurrentType,new NextResultInfo(NextException.COMMAND_CONTEXT_ERROR, data.info));
+                        mIRobotOperateListener.onCommandResult(mCurrentType, new NextResultInfo(NextException.COMMAND_CONTEXT_ERROR, data.info));
                         break;
                     case 5:
-                        mIRobotOperateListener.onCommandResult(mCurrentType,new NextResultInfo(NextException.COMMAND_NOT_EXIT, data.info));
+                        mIRobotOperateListener.onCommandResult(mCurrentType, new NextResultInfo(NextException.COMMAND_NOT_EXIT, data.info));
                         break;
                     case 6:
-                        mIRobotOperateListener.onCommandResult(mCurrentType,new NextResultInfo(NextException.COMMAND_INPUT_NULL, data.info));
+                        mIRobotOperateListener.onCommandResult(mCurrentType, new NextResultInfo(NextException.COMMAND_INPUT_NULL, data.info));
                         break;
                     case 7:
-                        mIRobotOperateListener.onCommandResult(mCurrentType,new NextResultInfo(NextException.COMMAND_TASK_ERROR, data.info));
+                        mIRobotOperateListener.onCommandResult(mCurrentType, new NextResultInfo(NextException.COMMAND_TASK_ERROR, data.info));
                         break;
                     case 8:
-                        mIRobotOperateListener.onCommandResult(mCurrentType,new NextResultInfo(NextException.COMMAND_AL_ERROR, data.info));
+                        mIRobotOperateListener.onCommandResult(mCurrentType, new NextResultInfo(NextException.COMMAND_AL_ERROR, data.info));
                         break;
                     case 9:
-                        mIRobotOperateListener.onCommandResult(mCurrentType,new NextResultInfo(NextException.COMMAND_BUSY_ERROR, data.info));
+                        mIRobotOperateListener.onCommandResult(mCurrentType, new NextResultInfo(NextException.COMMAND_BUSY_ERROR, data.info));
                         break;
 
                     case 10:
-                        mIRobotOperateListener.onCommandResult(mCurrentType,new NextResultInfo(NextException.COMMAND_LOW_ERROR, data.info));
+                        mIRobotOperateListener.onCommandResult(mCurrentType, new NextResultInfo(NextException.COMMAND_LOW_ERROR, data.info));
                         break;
                     default:
-                        mIRobotOperateListener.onCommandResult(mCurrentType,new NextResultInfo(data.code, data.info));
+                        mIRobotOperateListener.onCommandResult(mCurrentType, new NextResultInfo(data.code, data.info));
                         break;
                 }
             }
@@ -205,6 +209,7 @@ public class NextOperateHelper extends IBaseHelper<NextOperatePresenter> impleme
         params.put("script_name", "");
         params.put("type", COMMAND_STOP_REST);
         mPresenter.startTask(HttpUri.URL_RUN_TASK_COMMAND, params);
+        mCallBackMap.put(HttpUri.URL_RUN_TASK_COMMAND, mIRobotOperateListener);
     }
 
 
@@ -217,6 +222,7 @@ public class NextOperateHelper extends IBaseHelper<NextOperatePresenter> impleme
         params.put("script_name", "");
         params.put("type", COMMAND_REST);
         mPresenter.startTask(HttpUri.URL_RUN_TASK_COMMAND, params);
+        mCallBackMap.put(HttpUri.URL_RUN_TASK_COMMAND, mIRobotOperateListener);
     }
 
     /**
@@ -232,6 +238,7 @@ public class NextOperateHelper extends IBaseHelper<NextOperatePresenter> impleme
         params.put("y", worldY);
         params.put("theta", theta);
         mPresenter.request2DNavGoal(HttpUri.URL_SYNC_2DNavGoal, params);
+        mCallBackMap.put(HttpUri.URL_SYNC_2DNavGoal, mIRobotOperateListener);
     }
 
     /**
@@ -240,6 +247,7 @@ public class NextOperateHelper extends IBaseHelper<NextOperatePresenter> impleme
     public void on2DNavCancel() {
         HashMap<String, Object> params = new HashMap<>();
         mPresenter.request2DNavCancel(HttpUri.URL_SYNC_2DNavCANCEL, params);
+        mCallBackMap.put(HttpUri.URL_SYNC_2DNavCANCEL, mIRobotOperateListener);
     }
 
     public void setRobotOperateListener(IRobotOperateListener robotOperateListener) {
@@ -248,11 +256,12 @@ public class NextOperateHelper extends IBaseHelper<NextOperatePresenter> impleme
 
     /**
      * 智能初始化定位
+     *
      * @param worldX
      * @param worldY
      * @param theta
      */
-    public void onSmartLocation(double worldX,double worldY,double theta){
+    public void onSmartLocation(double worldX, double worldY, double theta) {
         Logger.d("智能初始化定位操作");
         mInitLocationType = LOCATION_SMART;
         HashMap<String, Object> params = new HashMap<>();
@@ -260,17 +269,18 @@ public class NextOperateHelper extends IBaseHelper<NextOperatePresenter> impleme
         params.put("y", worldY);
         params.put("theta", theta);
         mPresenter.initLocation(HttpUri.URL_INIT_LOCATION, params);
+        mCallBackMap.put(HttpUri.URL_INIT_LOCATION, mIRobotLocationListener);
     }
-
 
 
     /**
      * 强制初始化定位
+     *
      * @param worldX
      * @param worldY
      * @param theta
      */
-    public void onEnforceLocation(double worldX,double worldY,double theta){
+    public void onEnforceLocation(double worldX, double worldY, double theta) {
         Logger.d("强制初始化定位操作");
         mInitLocationType = LOCATION_ENFORCE;
         HashMap<String, Object> params = new HashMap<>();
@@ -278,30 +288,31 @@ public class NextOperateHelper extends IBaseHelper<NextOperatePresenter> impleme
         params.put("y", worldY);
         params.put("theta", theta);
         mPresenter.initLocationForce(HttpUri.URL_INIT_LOCATION_FORCE, params);
+        mCallBackMap.put(HttpUri.URL_INIT_LOCATION_FORCE, mIRobotLocationListener);
     }
 
-    public void setRobotLocationListener( IRobotLocationListener locationListener) {
+    public void setRobotLocationListener(IRobotLocationListener locationListener) {
         this.mIRobotLocationListener = locationListener;
     }
 
     @Override
     public void initLocationDataCallBack(HttpResponse data) {
-        mIRobotLocationListener.onLocationResult(mInitLocationType,new NextResultInfo(data.code,data.info));
+        mIRobotLocationListener.onLocationResult(mInitLocationType, new NextResultInfo(data.code, data.info));
     }
 
-    public interface IRobotOperateListener {
-        void onSet2DNavResult(NextResultInfo resultInfo);
+    public abstract static class IRobotOperateListener implements IBaseCallBack {
+        public abstract void onSet2DNavResult(NextResultInfo resultInfo);
 
-        void onCancel2DNavResult(NextResultInfo resultInfo);
+        public abstract void onCancel2DNavResult(NextResultInfo resultInfo);
 
-        void onCommandResult(int type,NextResultInfo resultInfo);
+        public abstract void onCommandResult(int type, NextResultInfo resultInfo);
     }
 
 
     /**
      * 初始化定位回调
      */
-    public interface IRobotLocationListener {
-        void onLocationResult(int type,NextResultInfo resultInfo);
+    public abstract static class IRobotLocationListener implements IBaseCallBack {
+        public abstract void onLocationResult(int type, NextResultInfo resultInfo);
     }
 }

@@ -17,6 +17,7 @@ along with next-sdk.  If not, see <http://www.gnu.org/licenses/>.
 package com.lib.sdk.next.setting;
 
 import com.lib.sdk.next.NextResultInfo;
+import com.lib.sdk.next.base.IBaseCallBack;
 import com.lib.sdk.next.base.IBaseHelper;
 import com.lib.sdk.next.creater.CreateMapHelper;
 import com.lib.sdk.next.o.http.HttpResponse;
@@ -66,11 +67,12 @@ public class SettingHelper extends IBaseHelper<SettingPresenter> implements Sett
         super(presener);
     }
 
-
     @Override
-    public void showErr(String uri, String msg) {
-
+    public void showErr(String uri, int code, String msg) {
+        mRobotSpeedListener.onHttpError(uri,code,msg);
     }
+
+
 
     @Override
     public void attachView(MapDrawView drawView) {
@@ -146,13 +148,13 @@ public class SettingHelper extends IBaseHelper<SettingPresenter> implements Sett
         this.mRobotSpeedListener = robotSpeedListener;
     }
 
-    public interface IRobotSpeedListener {
+    public static abstract class IRobotSpeedListener implements IBaseCallBack {
 
-        void onSetRobotSpeed(NextResultInfo resultInfo);
+        public abstract void onSetRobotSpeed(NextResultInfo resultInfo);
 
-        void onGetSuccessRobotSpeed(double speedX, double speedTheta);
+        public abstract void onGetSuccessRobotSpeed(double speedX, double speedTheta);
 
-        void onGetFailedRobotSpeed(NextResultInfo resultInfo);
+        public abstract void onGetFailedRobotSpeed(NextResultInfo resultInfo);
     }
 
 

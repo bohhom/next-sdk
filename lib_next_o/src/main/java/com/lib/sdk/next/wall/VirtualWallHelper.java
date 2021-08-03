@@ -19,6 +19,7 @@ package com.lib.sdk.next.wall;
 import android.util.Log;
 
 import com.lib.sdk.next.NextResultInfo;
+import com.lib.sdk.next.base.IBaseCallBack;
 import com.lib.sdk.next.base.IBaseHelper;
 import com.lib.sdk.next.base.NxMap;
 import com.lib.sdk.next.o.R;
@@ -77,9 +78,10 @@ public class VirtualWallHelper extends IBaseHelper<VirtualWallPresenter> impleme
     }
 
 
-    @Override
-    public void showErr(String uri, String msg) {
 
+    @Override
+    public void showErr(String uri, int code, String msg) {
+        mVirtualListener.onHttpError(uri,code,msg);
     }
 
     @Override
@@ -220,7 +222,7 @@ public class VirtualWallHelper extends IBaseHelper<VirtualWallPresenter> impleme
                     ProjectCacheManager.updateObstaclesInfoFile(GlobalOperate.getApp(), getProjectId(), obstacleInfoJson);
                     ProjectCacheManager.updateProject(GlobalOperate.getApp(), getProjectId(), mTempProjectContent);
                     if(mVirtualListener!=null){
-                        mVirtualListener.onSaveSuccess(mVirtualWallOption.getCurrentWall());
+                        mVirtualListener.onSave(new NextResultInfo(response.code, response.info),mVirtualWallOption.getCurrentWall());
                     }
                     break;
 
@@ -242,7 +244,7 @@ public class VirtualWallHelper extends IBaseHelper<VirtualWallPresenter> impleme
                     ProjectCacheManager.updateObstaclesInfoFile(GlobalOperate.getApp(), getProjectId(), obstacleInfoJson);
                     ProjectCacheManager.updateProject(GlobalOperate.getApp(), getProjectId(), mTempProjectContent);
                     if(mVirtualListener!=null){
-                        mVirtualListener.onDeletedSuccess(new NextResultInfo(response.code, response.info));
+                        mVirtualListener.onDelete(new NextResultInfo(response.code, response.info));
                     }
                     break;
             }
@@ -252,13 +254,13 @@ public class VirtualWallHelper extends IBaseHelper<VirtualWallPresenter> impleme
 
                 case TYPE_SAVE:
                     if(mVirtualListener!=null){
-                        mVirtualListener.onSaveFailed(new NextResultInfo(response.code, response.info));
+                        mVirtualListener.onSave(new NextResultInfo(response.code, response.info),null);
                     }
                     break;
 
                 case TYPE_DELETE:
                     if (mVirtualListener != null) {
-                        mVirtualListener.onDeletedFail(new NextResultInfo(response.code, response.info));
+                        mVirtualListener.onDelete(new NextResultInfo(response.code, response.info));
                     }
                     break;
             }
@@ -285,15 +287,11 @@ public class VirtualWallHelper extends IBaseHelper<VirtualWallPresenter> impleme
         this.mVirtualListener = virtualListener;
     }
 
-  public interface  IOnVirtualListener{
+  public  abstract static class IOnVirtualListener implements IBaseCallBack {
 
-       void onSaveSuccess(VirtualWallBean virtualWallBean);
+      public abstract void onSave(NextResultInfo resultInfo,VirtualWallBean virtualWallBean);
 
-       void onSaveFailed(NextResultInfo resultInfo);
-
-      void onDeletedSuccess(NextResultInfo resultInfo);
-
-      void onDeletedFail(NextResultInfo resultInfo);
+      public abstract void onDelete(NextResultInfo resultInfo);
 
   }
 }
