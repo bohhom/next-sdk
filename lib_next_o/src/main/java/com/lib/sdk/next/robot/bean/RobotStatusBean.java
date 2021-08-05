@@ -97,6 +97,31 @@ public class RobotStatusBean {
      */
     private String positionJson = "";
 
+    /**
+     * 当前机器人嵌入式主板状态
+     */
+    private int  board_state = 0;
+
+    /**
+     *  触边急停状态
+     */
+    private int  edge_switch = 0;
+
+    public int getBoard_state() {
+        return board_state;
+    }
+
+    public void setBoard_state(int board_state) {
+        this.board_state = board_state;
+    }
+
+    public int getEdge_switch() {
+        return edge_switch;
+    }
+
+    public void setEdge_switch(int edge_switch) {
+        this.edge_switch = edge_switch;
+    }
 
     /**
      * 机器人位置服务器Json数据

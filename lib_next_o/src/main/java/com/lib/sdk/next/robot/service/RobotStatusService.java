@@ -97,6 +97,8 @@ public class RobotStatusService extends WebSocketService {
                         RobotConstant.mRobotStatusBean.setPositionJson(data.getString("position"));
                         RobotConstant.mRobotStatusBean.setBatteryState(data.getInt("battery_state"));
                         RobotConstant.mRobotStatusBean.setIoStatusJson(new JSONObject(data.optString("io_status")));
+                        RobotConstant.mRobotStatusBean.setBoard_state(data.optInt("board_state"));
+                        RobotConstant.mRobotStatusBean.setEdge_switch(data.optInt("edge_switch"));
 
                         try {
                             JSONObject positionObject = data.getJSONObject("position");
