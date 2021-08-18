@@ -211,7 +211,7 @@ public class LocationHelper extends IBaseHelper<RobotPresenter> implements  Init
     public void setLocationListener(LocationHelper.OnLocationListener locationListener) {
         this.mLocationListener = locationListener;
     }
-    public abstract class OnLocationListener implements IBaseCallBack {
+    public abstract static class OnLocationListener implements IBaseCallBack {
 
         public abstract void onSuccess(int type);
 
