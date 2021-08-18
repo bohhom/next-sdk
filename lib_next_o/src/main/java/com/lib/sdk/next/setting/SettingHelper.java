@@ -16,6 +16,7 @@ along with next-sdk.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.lib.sdk.next.setting;
 
+import com.bozh.logger.Logger;
 import com.lib.sdk.next.NextResultInfo;
 import com.lib.sdk.next.base.IBaseCallBack;
 import com.lib.sdk.next.base.IBaseHelper;
@@ -69,7 +70,13 @@ public class SettingHelper extends IBaseHelper<SettingPresenter> implements Sett
 
     @Override
     public void showErr(String uri, int code, String msg) {
-        mRobotSpeedListener.onHttpError(uri,code,msg);
+        if(mRobotSpeedListener!=null){
+            mRobotSpeedListener.onHttpError(uri,code,msg);
+        }
+        else{
+            Logger.e("SettingHelper callback is null");
+        }
+
     }
 
 

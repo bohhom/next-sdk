@@ -417,6 +417,11 @@ public class MapDrawView extends View {
      * 计数器，防止多次点击导致最后一次形成longpress的时间变短
      */
     private int mCounter;
+
+    private IOnDrawListener mOnDrawListener;
+
+    private ITouchListener mTouchListener;
+
     /**
      * 长按的runnable
      */
@@ -921,12 +926,10 @@ public class MapDrawView extends View {
     private void createNewNavigationPoint() {
         Bitmap pointBitmap;
         Bitmap nameCloseBitmap;
-
         if (mCurrentOperatePoint == null) { //说明没有添加导航点
             //添加导航点
             pointBitmap = getIconBitmap(R.mipmap.navigation_point);
             nameCloseBitmap = getIconBitmap(R.mipmap.name_close);
-
 
             if (toX(mTouchX) > 0 && toY(mTouchY) > 0) {
                 mCurrentOperatePoint = new PositionPointBean(pointBitmap, PositionPointBean.TYPE_NAVIGATION_POINT, mPositionPointSize, toX(mTouchX), toY(mTouchY),
@@ -958,34 +961,8 @@ public class MapDrawView extends View {
                 mIsClickOnCurrentOperatePoint = true;
 //                            mCurrentOperatePoint.setNeedShowName(!mCurrentOperatePoint.isNeedShowName());
             } else { //没有点在新建的导航点上
-
-                if (mCurrentOperatePoint == null) { //已经添加了导航点
-                    //添加导航点
-                    pointBitmap = getIconBitmap(R.mipmap.navigation_point);
-                    nameCloseBitmap = getIconBitmap(R.mipmap.name_close);
-                    if (toX(mDownEvent.getX()) - pointBitmap.getWidth() / 2 > 0 &&
-                            toY(mDownEvent.getY()) - pointBitmap.getHeight() / 2 > 0) {
-                        mCurrentOperatePoint = new PositionPointBean(pointBitmap, PositionPointBean.TYPE_NAVIGATION_POINT, mPositionPointSize, toX(mTouchX), toY(mTouchY),
-                                mNavigationNameBGBitmap,
-                                mNameBgSize,
-                                mNamePaint,
-                                mCurrentOperatePointName,
-                                nameCloseBitmap,
-                                mNameCloseSize
-                        );
-                        mCurrentOperatePoint.setPointName(mCurrentOperatePointName);
-                        mCurrentOperatePoint.setBigBitmap(getIconBitmap(R.mipmap.navigation_point_big));
-
-                        mCurrentOperatePoint.setBitmapX(toX(mTouchX));
-                        mCurrentOperatePoint.setBitmapY(toY(mTouchY));
-
-                        mCurrentPointOriX = mCurrentOperatePoint.getLocation().x;
-                        mCurrentPointOriY = mCurrentOperatePoint.getLocation().y;
-                        mCurrentPointOriPivotX = mCurrentOperatePoint.getPivotX();
-                        mCurrentPointOriPivotY = mCurrentOperatePoint.getPivotY();
-                    }
-                }
-
+                mCurrentOperatePoint = null;
+                createNewNavigationPoint();
             }
 
         }
@@ -1175,6 +1152,9 @@ public class MapDrawView extends View {
                     mLastFocusX = null;
                     mLastFocusY = null;
                 }
+                if(mTouchListener!=null){
+                    mTouchListener.onScrollBegin(e,toX(mTouchX),toY(mTouchY));
+                }
             }
 
             @Override
@@ -1243,7 +1223,9 @@ public class MapDrawView extends View {
                         break;
                 }
 
-
+                if(mTouchListener!=null){
+                    mTouchListener.onScrollEnd(e,toX(mTouchX),toY(mTouchY));
+                }
             }
 
 
@@ -1315,6 +1297,10 @@ public class MapDrawView extends View {
                                 mErasePoint.y = (int) toY(mTouchY);
                             }
                             break;
+                    }
+
+                    if(mTouchListener!=null){
+                        mTouchListener.onScroll(e1,e2,distanceX,distanceY,toX(mTouchX),toY(mTouchY));
                     }
                     invalidate();
                 }
@@ -1529,6 +1515,9 @@ public class MapDrawView extends View {
                     }
                 }
 
+                if (mTouchListener != null) {
+                    mTouchListener.onSingleTapUp(e,toX(e.getX()),toY(e.getY()));
+                }
                 invalidate();
                 return true;
             }
@@ -1701,6 +1690,10 @@ public class MapDrawView extends View {
                 mIsScale = false;
                 mIsLongPress = false;
                 mIsClickOnCurrentOperatePoint = false;
+
+                if (mTouchListener != null) {
+                    mTouchListener.onUpOrCancel(e,toX(e.getX()),toY(e.getY()));
+                }
                 invalidate();
             }
         });
@@ -2073,6 +2066,10 @@ public class MapDrawView extends View {
                     mRouteBean.drawNameCloseBg(canvas, mVirtualWallNameCloseBgBitmap, mNameCloseSize,mRouteBean.getmPath());
                     canvas.restore();
                 }
+            }
+
+            if (mOnDrawListener != null) {
+                mOnDrawListener.onDraw(canvas);
             }
 
             canvas.restore();
@@ -2998,6 +2995,36 @@ public class MapDrawView extends View {
         return arr;
     }
 
+    public void  setOnDrawListener(IOnDrawListener iOnDrawListener ){
+        this.mOnDrawListener = iOnDrawListener;
+    }
 
+    public interface  IOnDrawListener{
+
+       void onDraw(Canvas canvas);
+    }
+
+
+    public void  setOnViewTouchListener(ITouchListener iTouchListener ){
+        this.mTouchListener = iTouchListener;
+    }
+
+
+
+    public interface  ITouchListener{
+
+
+        void onScrollBegin(MotionEvent e,float bitmapX,float bitmapY);
+
+        void onScrollEnd(MotionEvent e,float bitmapX,float bitmapY);
+
+
+        void onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY,float bitmapX,float bitmapY);
+
+
+        void onSingleTapUp(MotionEvent e,float bitmapX,float bitmapY);
+
+        void onUpOrCancel(MotionEvent e,float bitmapX,float bitmapY);
+    }
 }
 

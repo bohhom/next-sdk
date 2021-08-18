@@ -20,13 +20,24 @@ import com.lib.sdk.next.NextException;
 import com.lib.sdk.next.NextResultInfo;
 import com.lib.sdk.next.base.IBaseCallBack;
 import com.lib.sdk.next.base.IBaseHelper;
+import com.lib.sdk.next.global.GlobalOperate;
 import com.lib.sdk.next.gps.CoordEntry;
 import com.lib.sdk.next.gps.InitLocationCallBack;
+import com.lib.sdk.next.o.R;
 import com.lib.sdk.next.o.http.HttpResponse;
+import com.lib.sdk.next.o.map.bean.PositionPointBean;
+import com.lib.sdk.next.o.map.manager.ProjectCacheManager;
 import com.lib.sdk.next.o.map.net.HttpUri;
+import com.lib.sdk.next.o.map.util.PositionUtil;
 import com.lib.sdk.next.o.map.widget.MapDrawView;
+import com.lib.sdk.next.point.IPushSyncConfigCallBack;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -124,8 +135,15 @@ public class NextOperateHelper extends IBaseHelper<NextOperatePresenter> impleme
 
     @Override
     public void showErr(String uri, int code, String msg) {
-        IBaseCallBack callBack = mCallBackMap.remove(uri);
-        callBack.onHttpError(uri, code, msg);
+        if (mCallBackMap != null) {
+            IBaseCallBack callBack = mCallBackMap.remove(uri);
+            if (callBack != null) {
+                callBack.onHttpError(uri, code, msg);
+            } else {
+                Logger.e("nextOperateHelper callback is null");
+            }
+        }
+
     }
 
 
@@ -291,6 +309,7 @@ public class NextOperateHelper extends IBaseHelper<NextOperatePresenter> impleme
         mCallBackMap.put(HttpUri.URL_INIT_LOCATION_FORCE, mIRobotLocationListener);
     }
 
+
     public void setRobotLocationListener(IRobotLocationListener locationListener) {
         this.mIRobotLocationListener = locationListener;
     }
@@ -299,6 +318,7 @@ public class NextOperateHelper extends IBaseHelper<NextOperatePresenter> impleme
     public void initLocationDataCallBack(HttpResponse data) {
         mIRobotLocationListener.onLocationResult(mInitLocationType, new NextResultInfo(data.code, data.info));
     }
+
 
     public abstract static class IRobotOperateListener implements IBaseCallBack {
         public abstract void onSet2DNavResult(NextResultInfo resultInfo);
@@ -315,4 +335,6 @@ public class NextOperateHelper extends IBaseHelper<NextOperatePresenter> impleme
     public abstract static class IRobotLocationListener implements IBaseCallBack {
         public abstract void onLocationResult(int type, NextResultInfo resultInfo);
     }
+
+
 }

@@ -29,7 +29,9 @@ import com.tamic.novate.callback.RxStringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by aruba on 2018/2/6.

@@ -20,6 +20,7 @@ import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.View;
 
+import com.bozh.logger.Logger;
 import com.lib.sdk.next.NextException;
 import com.lib.sdk.next.NextResultInfo;
 import com.lib.sdk.next.base.IBaseHelper;
@@ -118,7 +119,11 @@ public class CreateMapHelper extends IBaseHelper<CreateMapPresener> implements I
 
     @Override
     public void showErr(String uri, int code, String msg) {
-
+        if (mOperateListener != null) {
+            mOperateListener.onHttpError(uri, code, msg);
+        } else {
+            Logger.e("CreateMapHelper callback is null");
+        }
     }
 
     public static CreateMapHelper getInstance() {
@@ -189,13 +194,17 @@ public class CreateMapHelper extends IBaseHelper<CreateMapPresener> implements I
                     try {
                         JSONObject data = new JSONObject(response.data);
                         mPresenter.saveMapToLocal(data);
-                        mOperateListener.onSave(new NextResultInfo(code, info));
+                        if (mOperateListener != null) {
+                            mOperateListener.onSave(new NextResultInfo(code, info));
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     break;
                 case OperateType.CANCEL_TYPE:
-                    mOperateListener.onCancel(new NextResultInfo(code, info));
+                    if (mOperateListener != null) {
+                        mOperateListener.onCancel(new NextResultInfo(code, info));
+                    }
                     break;
 
                 default:
@@ -205,10 +214,15 @@ public class CreateMapHelper extends IBaseHelper<CreateMapPresener> implements I
             int resultCode = getMsgCode(code);
             switch (mOperateType) {
                 case OperateType.SAVE_TYPE:
-                    mOperateListener.onSave(new NextResultInfo(resultCode, info));
+                    if(mOperateListener!=null){
+                        mOperateListener.onSave(new NextResultInfo(resultCode, info));
+                    }
+
                     break;
                 case OperateType.CANCEL_TYPE:
-                    mOperateListener.onCancel(new NextResultInfo(resultCode, info));
+                    if (mOperateListener != null) {
+                        mOperateListener.onCancel(new NextResultInfo(resultCode, info));
+                    }
                     break;
                 default:
                     break;

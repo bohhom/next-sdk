@@ -60,8 +60,12 @@ public class ProjectInfoHelper  extends IBaseHelper<ProjectPresenter> implements
 
     @Override
     public void showErr(String uri, int code, String msg) {
-        mIPullProjectCallBack.onHttpError(uri,code,msg);
-
+        if (mIPullProjectCallBack != null) {
+            mIPullProjectCallBack.onHttpError(uri, code, msg);
+        }
+        else{
+            Logger.e("ProjectInfoHelper callback is null");
+        }
     }
 
     public static ProjectInfoHelper getInstance() {
@@ -132,13 +136,19 @@ public class ProjectInfoHelper  extends IBaseHelper<ProjectPresenter> implements
                 }
 
             } else {
-                mIPullProjectCallBack.onPullProjectResult(new NextResultInfo(code,info));
+                if (mIPullProjectCallBack != null) {
+                    mIPullProjectCallBack.onPullProjectResult(new NextResultInfo(code, info));
+                }
+
 
             }
         } catch (JSONException e) {
             e.printStackTrace();
             Logger.e("获取项目更新失败， error = %s",e.getMessage());
-            mIPullProjectCallBack.onPullProjectResult(new NextResultInfo(NextException.CODE_NEXT_JSON,e.getMessage()));
+            if(mIPullProjectCallBack!=null){
+                mIPullProjectCallBack.onPullProjectResult(new NextResultInfo(NextException.CODE_NEXT_JSON,e.getMessage()));
+            }
+
         }
     }
 
@@ -171,15 +181,23 @@ public class ProjectInfoHelper  extends IBaseHelper<ProjectPresenter> implements
                 mPresenter.syncProjectDataToLocal(projectArray, new IProjectSyncLocalBack() {
                     @Override
                     public void onSysncLocal() {
-                        mIPullProjectCallBack.onPullProjectResult(new NextResultInfo(code,info));
+                        if(mIPullProjectCallBack!=null){
+                            mIPullProjectCallBack.onPullProjectResult(new NextResultInfo(code,info));
+                        }
+
                     }
                 });
             } else {
-                mIPullProjectCallBack.onPullProjectResult(new NextResultInfo(code,info));
+                if (mIPullProjectCallBack != null) {
+                    mIPullProjectCallBack.onPullProjectResult(new NextResultInfo(code, info));
+                }
+
             }
         } catch (JSONException e) {
             e.printStackTrace();
-            mIPullProjectCallBack.onPullProjectResult(new NextResultInfo(NextException.CODE_NEXT_JSON,e.getMessage()));
+            if (mIPullProjectCallBack != null) {
+                mIPullProjectCallBack.onPullProjectResult(new NextResultInfo(NextException.CODE_NEXT_JSON, e.getMessage()));
+            }
             Logger.e("保存项目到本地失败，错误信息，error = %s",e.getMessage());
         }
     }

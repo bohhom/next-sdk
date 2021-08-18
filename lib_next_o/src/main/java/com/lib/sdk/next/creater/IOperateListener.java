@@ -16,6 +16,7 @@ along with next-sdk.  If not, see <http://www.gnu.org/licenses/>.
 package com.lib.sdk.next.creater;
 
 import com.lib.sdk.next.NextResultInfo;
+import com.lib.sdk.next.base.IBaseCallBack;
 
 /**
  * FileName: IOperateListener
@@ -23,10 +24,10 @@ import com.lib.sdk.next.NextResultInfo;
  * Date: 2021/6/10 15:40
  * Description: 操作返回
  */
-public interface IOperateListener {
+public abstract class IOperateListener implements IBaseCallBack {
 
-    void onSave(NextResultInfo resultInfo);
+    public abstract void onSave(NextResultInfo resultInfo);
 
-    void onCancel(NextResultInfo resultInfo);
+    public abstract void onCancel(NextResultInfo resultInfo);
 
 }

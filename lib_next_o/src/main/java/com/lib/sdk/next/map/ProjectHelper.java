@@ -17,6 +17,7 @@ package com.lib.sdk.next.map;
 
 import android.text.TextUtils;
 
+import com.bozh.logger.Logger;
 import com.lib.sdk.next.NextException;
 import com.lib.sdk.next.NextResultInfo;
 import com.lib.sdk.next.base.IBaseCallBack;
@@ -80,7 +81,12 @@ public class ProjectHelper extends IBaseHelper<MapPresenter> implements IProject
 
     @Override
     public void showErr(String uri, int code, String msg) {
-        iMmapOperResultListener.onHttpError(uri, code, msg);
+        if (iMmapOperResultListener != null) {
+            iMmapOperResultListener.onHttpError(uri, code, msg);
+        } else {
+            Logger.e("ProjectHelper callback is null");
+        }
+
     }
 
 
@@ -209,22 +215,38 @@ public class ProjectHelper extends IBaseHelper<MapPresenter> implements IProject
         int code = response.code;
         if (code == 0) {
             RobotConstant.mRobotStatusBean.setProjectId(mSelectProjectId);
-            iMmapOperResultListener.onChangeProjectResult(new NextResultInfo(NextException.CODE_NEXT_SUCCESS, info));
+            if(iMmapOperResultListener!=null){
+                iMmapOperResultListener.onChangeProjectResult(new NextResultInfo(NextException.CODE_NEXT_SUCCESS, info));
+            }
+
         }
         else if(code == 1){
-            iMmapOperResultListener.onChangeProjectResult(new NextResultInfo(NextException.PROJECT_NOT_CHANGE, info));
+            if(iMmapOperResultListener!=null) {
+                iMmapOperResultListener.onChangeProjectResult(new NextResultInfo(NextException.PROJECT_NOT_CHANGE, info));
+            }
         }
         else if(code  == 2){
-            iMmapOperResultListener.onChangeProjectResult(new NextResultInfo(NextException.PROJECT_LOAD_FAIL, info));
+            if(iMmapOperResultListener!=null){
+                iMmapOperResultListener.onChangeProjectResult(new NextResultInfo(NextException.PROJECT_LOAD_FAIL, info));
+            }
+
         }
         else if(code == 3){
-            iMmapOperResultListener.onChangeProjectResult(new NextResultInfo(NextException.PROJECT_CHANGE_FAIL, info));
+            if(iMmapOperResultListener!=null){
+                iMmapOperResultListener.onChangeProjectResult(new NextResultInfo(NextException.PROJECT_CHANGE_FAIL, info));
+            }
+
         }
         else if(code == 4){
-            iMmapOperResultListener.onChangeProjectResult(new NextResultInfo(NextException.PROJECT_TASK_OTHER, info));
+            if(iMmapOperResultListener!=null){
+                iMmapOperResultListener.onChangeProjectResult(new NextResultInfo(NextException.PROJECT_TASK_OTHER, info));
+            }
+
         }
         else{
-            iMmapOperResultListener.onChangeProjectResult(new NextResultInfo(code, info));
+            if (iMmapOperResultListener != null) {
+                iMmapOperResultListener.onChangeProjectResult(new NextResultInfo(code, info));
+            }
         }
 
     }
@@ -241,10 +263,16 @@ public class ProjectHelper extends IBaseHelper<MapPresenter> implements IProject
                         //更新本地的工程名字
                         ProjectCacheManager.updateProject(GlobalOperate.getApp(), mSelectProjectId, mTempUpdateProjectContent);
                     }
-                    iMmapOperResultListener.onChangeProjectName(new NextResultInfo(code, info));
+                    if(iMmapOperResultListener!=null){
+                        iMmapOperResultListener.onChangeProjectName(new NextResultInfo(code, info));
+                    }
+
                     break;
                 case SYNC_NULL:
-                    iMmapOperResultListener.onUploadProject(new NextResultInfo(code, info));
+                    if (iMmapOperResultListener != null) {
+                        iMmapOperResultListener.onUploadProject(new NextResultInfo(code, info));
+                    }
+
                     break;
                 default:
                     break;
@@ -261,23 +289,33 @@ public class ProjectHelper extends IBaseHelper<MapPresenter> implements IProject
     public void deleteProjectDataCallBack(HttpResponse response) {
         String info = response.info;
         int code = response.code;
-        if (code == 0 ) {
+        if (code == 0) {
             //删除本地工程
             ProjectCacheManager.deleteProject(GlobalOperate.getApp(), mSelectProjectId);
-            iMmapOperResultListener.onDeleteProject(new NextResultInfo(NextException.CODE_NEXT_SUCCESS, info));
-        }
-        else if(code == 1){
-            iMmapOperResultListener.onDeleteProject(new NextResultInfo(NextException.PROJECT_NOT_DELETE, info));
-        }
-        else if(code == 2){
+            if (iMmapOperResultListener != null) {
+                iMmapOperResultListener.onDeleteProject(new NextResultInfo(NextException.CODE_NEXT_SUCCESS, info));
+            }
+
+        } else if (code == 1) {
+            if (iMmapOperResultListener != null) {
+                iMmapOperResultListener.onDeleteProject(new NextResultInfo(NextException.PROJECT_NOT_DELETE, info));
+            }
+        } else if (code == 2) {
             ProjectCacheManager.deleteProject(GlobalOperate.getApp(), mSelectProjectId);
-            iMmapOperResultListener.onDeleteProject(new NextResultInfo(NextException.PROJECT_NOT_EXIT, info));
-        }
-        else if(code == 3){
-            iMmapOperResultListener.onDeleteProject(new NextResultInfo(NextException.PROJECT_DELETE_FAIL, info));
-        }
-        else{
-            iMmapOperResultListener.onDeleteProject(new NextResultInfo(code, info));
+            if (iMmapOperResultListener != null) {
+                iMmapOperResultListener.onDeleteProject(new NextResultInfo(NextException.PROJECT_NOT_EXIT, info));
+            }
+
+        } else if (code == 3) {
+            if (iMmapOperResultListener != null) {
+                iMmapOperResultListener.onDeleteProject(new NextResultInfo(NextException.PROJECT_DELETE_FAIL, info));
+            }
+
+        } else {
+            if (iMmapOperResultListener != null) {
+                iMmapOperResultListener.onDeleteProject(new NextResultInfo(code, info));
+            }
+
         }
 
     }

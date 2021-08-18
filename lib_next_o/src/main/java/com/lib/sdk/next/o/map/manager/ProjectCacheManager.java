@@ -730,7 +730,6 @@ public class ProjectCacheManager {
      */
     public static String getTaskInfoCacheDirPath(Context context) {
         String taskInfoCacheDirPath = getProjectCacheDirPath(context) + File.separator + TASK_CACHE_DIR_NAME;
-        Logger.i ( "geTaskInfoCacheDirPath：" + taskInfoCacheDirPath);
         return taskInfoCacheDirPath;
     }
 

@@ -17,6 +17,8 @@ package com.lib.sdk.next.point;
 
 import android.util.Log;
 
+import com.bozh.logger.Logger;
+import com.lib.sdk.next.NextException;
 import com.lib.sdk.next.NextResultInfo;
 import com.lib.sdk.next.base.IBaseCallBack;
 import com.lib.sdk.next.base.IBaseHelper;
@@ -101,7 +103,12 @@ public class PointHelper extends IBaseHelper<PointPresenter> implements IPushSyn
 
     @Override
     public void showErr(String uri, int code, String msg) {
-        mINavPointListener.onHttpError(uri,code,msg);
+        if (mINavPointListener != null) {
+            mINavPointListener.onHttpError(uri, code, msg);
+        } else {
+            Logger.e("pointHelper callback is null");
+        }
+
     }
 
     @Override
@@ -150,7 +157,6 @@ public class PointHelper extends IBaseHelper<PointPresenter> implements IPushSyn
                     if (mPointOption.getAction() == PointOption.ACTION_TOUCH) {
                         mMapDrawView.simulateClick();
                         mMapDrawView.refresh();
-                        requestUploadPoints();
                     }
                 }
                 return true;
@@ -247,6 +253,10 @@ public class PointHelper extends IBaseHelper<PointPresenter> implements IPushSyn
         setMapDrawPoint();
     }
 
+    protected void savePointByTouch() {
+        requestUploadPoints();
+    }
+
 
     /**
      * 编辑点
@@ -265,21 +275,27 @@ public class PointHelper extends IBaseHelper<PointPresenter> implements IPushSyn
     /**
      * 删除某个点
      *
-     * @param pointBean
+     * @param pointBeans
      */
-    protected void deletePoint(PositionPointBean pointBean) {
+    protected void deletePoint(List<PositionPointBean> pointBeans) {
         mPointOption = new PointOption();
         mPointOption.setOperateType(PointOperateType.TYPE_DELETE);
         mPointOption.setEdType(MapDrawView.TYPE_EDIT_INIT);
         mPointOption.setPointName("");
         mPointOption.setAction(PointOption.ACTION_NULL);
-        mPointOption.setCurrentOperatePoint(pointBean);
+        mPointOption.setCurrentOperatePoint(null);
+        mPointOption.setCurrentOperatePointList(pointBeans);
         mMapDrawView.setEditType(MapDrawView.TYPE_EDIT_INIT);
+        // Logger.d("走入删除点，点的数量 = %d，点的类型 = %d, 点的名称 = %s,点的参数 = %s",mAllTypePointList.size(),pointBean.getType(),pointBean.getPointName(),pointBean.toString());
         List<PositionPointBean> updatePositionList = new ArrayList<>();
         for (PositionPointBean pointEntry : mAllTypePointList) {
             updatePositionList.add(pointEntry);
         }
-        PositionUtil.deletePositionPoint(pointBean, updatePositionList);
+
+        for (int i = 0; i < pointBeans.size(); i++) {
+            PositionUtil.deletePositionPoint(pointBeans.get(i), updatePositionList);
+        }
+        Logger.d("走入内存，已经删除 要上传的点的数量为 %d", updatePositionList.size());
         pushSyncConfig(updatePositionList);
     }
 
@@ -335,18 +351,26 @@ public class PointHelper extends IBaseHelper<PointPresenter> implements IPushSyn
      * 请求上传所有的点
      */
     private void requestUploadPoints() {
-        if (!PositionUtil.isPositionPointNameExist(mPointOption.getPointName(), mAllTypePointList)) {
-            mPointOption.setCurrentOperatePoint(mMapDrawView.getCurrentOperatePoint());
-            if (mPointOption.getCurrentOperatePoint() != null) {
-                //保存到服务器的点
-                List<PositionPointBean> updatePositionList = new ArrayList<>();
-                for (PositionPointBean positionPointBean : mAllTypePointList) {
-                    updatePositionList.add(positionPointBean);
+        if (mPointOption != null && mAllTypePointList != null) {
+            if (!PositionUtil.isPositionPointNameExist(mPointOption.getPointName(), mAllTypePointList)) {
+                mPointOption.setCurrentOperatePoint(mMapDrawView.getCurrentOperatePoint());
+                if (mPointOption.getCurrentOperatePoint() != null) {
+                    //保存到服务器的点
+                    List<PositionPointBean> updatePositionList = new ArrayList<>();
+                    for (PositionPointBean positionPointBean : mAllTypePointList) {
+                        updatePositionList.add(positionPointBean);
+                    }
+                    updatePositionList.add(mPointOption.getCurrentOperatePoint());
+                    pushSyncConfig(updatePositionList);
                 }
-                updatePositionList.add(mPointOption.getCurrentOperatePoint());
-                pushSyncConfig(updatePositionList);
             }
+        } else {
+            if(mINavPointListener!= null){
+                mINavPointListener.onCreateNavPointFail(new NextResultInfo(NextException.CODE_NEXT_FAIL, " point is null"));
+            }
+
         }
+
     }
 
     private void setMapDrawPoint() {
@@ -369,6 +393,7 @@ public class PointHelper extends IBaseHelper<PointPresenter> implements IPushSyn
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        Logger.d("请求服务");
         mPresenter.pushSyncConfig(HttpUri.URL_PUSH_SYNC_CONFIG, params);
     }
 
@@ -426,7 +451,7 @@ public class PointHelper extends IBaseHelper<PointPresenter> implements IPushSyn
                     ProjectCacheManager.updatePositionInfoFile(GlobalOperate.getApp(), getProjectId(), positionInfoJson);
                     ProjectCacheManager.updateProject(GlobalOperate.getApp(), getProjectId(), mTempProjectContent);
 
-                    if(mINavPointListener!=null){
+                    if (mINavPointListener != null) {
                         mINavPointListener.onCreateNavPointSuccess(mPointOption.getCurrentOperatePoint());
                     }
 
@@ -438,15 +463,21 @@ public class PointHelper extends IBaseHelper<PointPresenter> implements IPushSyn
                     String mTempProjectContent1 = ProjectCacheManager.getUpdateProjectStampContent(GlobalOperate.getApp(), getProjectId());
                     ProjectCacheManager.updateProject(GlobalOperate.getApp(), getProjectId(), mTempProjectContent1);
 
-                    if(mINavPointListener!=null){
+                    if (mINavPointListener != null) {
                         mINavPointListener.onEdNavPointSuccess(mPointOption.getCurrentOperatePoint());
                     }
                     break;
                 case PointOperateType.TYPE_DELETE:
                     //删除该点
-                    PositionUtil.deletePositionPoint(mPointOption.getCurrentOperatePoint(), mAllTypePointList);
-                    PositionUtil.deletePositionPoint(mPointOption.getCurrentOperatePoint(), mNavigationList);
+                    if (mPointOption.getCurrentOperatePointList() != null) {
+                        for (int i = 0; i < mPointOption.getCurrentOperatePointList().size(); i++) {
+                            PositionUtil.deletePositionPoint(mPointOption.getCurrentOperatePointList().get(i), mAllTypePointList);
+                        }
+                    }
 
+                    // PositionUtil.deletePositionPoint(mPointOption.getCurrentOperatePoint(), mNavigationList);
+                    mPointOption.setCurrentOperatePointList(null);
+                    Logger.d("删除文件成功，服务器已删除,当前点的数量 = %d", mAllTypePointList.size());
 
                     //更新地图显示
                     mMapDrawView.setCurrentOperatePoint(null);
@@ -456,7 +487,9 @@ public class PointHelper extends IBaseHelper<PointPresenter> implements IPushSyn
                     ProjectCacheManager.updatePositionInfoFile(GlobalOperate.getApp(), getProjectId(), positionInfoJson);
                     ProjectCacheManager.updateProject(GlobalOperate.getApp(), getProjectId(), mTempProjectContent);
 
-                    if(mINavPointListener!=null){
+                    Logger.d("本地地图已经刷新,projectId = %s", getProjectId());
+
+                    if (mINavPointListener != null) {
                         mINavPointListener.onDeleteSuccess();
                     }
                     break;
@@ -496,45 +529,42 @@ public class PointHelper extends IBaseHelper<PointPresenter> implements IPushSyn
                     ProjectCacheManager.updateProject(GlobalOperate.getApp(), getProjectId(), mTempProjectContent);
 
                     mPointOption.getCurrentOperatePoint().setPointName(mPointOption.getPointName());
-                    if(mINavPointListener!=null){
+                    if (mINavPointListener != null) {
                         mINavPointListener.onUpdateNameSuccess(mPointOption.getCurrentOperatePoint());
                     }
                     break;
             }
 
-        }
-        else{
+        } else {
             switch (mPointOption.getOperateType()) {
                 case PointOperateType.TYPE_SAVE:
-                    if(mINavPointListener!=null){
-                        mINavPointListener.onCreateNavPointFail(new NextResultInfo(response.code,response.info));
+                    if (mINavPointListener != null) {
+                        mINavPointListener.onCreateNavPointFail(new NextResultInfo(response.code, response.info));
                     }
                     break;
                 case PointOperateType.TYPE_EDIT_FINISH:
                     //本地更新标记点信息
-                    if(mINavPointListener!=null){
-                        mINavPointListener.onEdNavPointFail(new NextResultInfo(response.code,response.info));
+                    if (mINavPointListener != null) {
+                        mINavPointListener.onEdNavPointFail(new NextResultInfo(response.code, response.info));
                     }
                     break;
                 case PointOperateType.TYPE_DELETE:
                     //删除该点
-                    if(mINavPointListener!=null){
-                        mINavPointListener.onDeleteFail(new NextResultInfo(response.code,response.info));
+                    if (mINavPointListener != null) {
+                        mINavPointListener.onDeleteFail(new NextResultInfo(response.code, response.info));
                     }
                     break;
                 case PointOperateType.TYPE_UPDATE_NAME:
-                    if(mINavPointListener!=null){
-                        mINavPointListener.onUpdateNameFail(new NextResultInfo(response.code,response.info));
+                    if (mINavPointListener != null) {
+                        mINavPointListener.onUpdateNameFail(new NextResultInfo(response.code, response.info));
                     }
                     break;
             }
         }
-
         mMapDrawView.setEditType(MapDrawView.TYPE_EDIT_INIT);
-        mPointOption = null;
     }
 
-    public void setNavPointListener(INavPointListener navPointListener){
+    public void setNavPointListener(INavPointListener navPointListener) {
         this.mINavPointListener = navPointListener;
     }
 

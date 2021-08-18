@@ -19,6 +19,8 @@ package com.lib.sdk.next.point;
 import com.lib.sdk.next.base.NxMap;
 import com.lib.sdk.next.o.map.bean.PositionPointBean;
 
+import java.util.List;
+
 /**
  * FileName: PointNavHelper
  * Author: zhikai.jin
@@ -34,6 +36,10 @@ public class PointNavHelper extends PointHelper{
         onAddPointByTouch(pointName);
     }
 
+    public void onSavePointTouch(){
+        savePointByTouch();
+    }
+
     public void onAddPointRobot(String pointName){
         onAddPointByRobot(pointName);
     }
@@ -42,8 +48,8 @@ public class PointNavHelper extends PointHelper{
         edPoint(pointBean);
     }
 
-    public void onDeletePoint(PositionPointBean pointBean){
-        deletePoint(pointBean);
+    public void onDeletePoint(List<PositionPointBean> pointBeans){
+        deletePoint(pointBeans);
     }
 
     public void onUpdatePoint(PositionPointBean pointBean,String pointName){

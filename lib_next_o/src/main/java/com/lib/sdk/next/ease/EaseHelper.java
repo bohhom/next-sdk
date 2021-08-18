@@ -59,7 +59,11 @@ public class EaseHelper extends IBaseHelper<EasePresenter> implements EaseUpdate
 
     @Override
     public void showErr(String uri, int code, String msg) {
-        mEaseListener.onHttpError(uri, code, msg);
+        if (mEaseListener != null) {
+            mEaseListener.onHttpError(uri, code, msg);
+        } else {
+            Logger.e("EaseHelper callback is null");
+        }
     }
 
     @Override

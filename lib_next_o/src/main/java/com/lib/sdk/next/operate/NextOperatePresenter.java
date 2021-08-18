@@ -21,6 +21,10 @@ import com.lib.sdk.next.o.http.HttpResponse;
 import com.lib.sdk.next.o.map.model.CustomModel;
 import com.lib.sdk.next.o.map.presenter.HttpPresenter;
 import com.lib.sdk.next.o.model.DataModel;
+import com.lib.sdk.next.o.model.JsonRequestModel;
+import com.lib.sdk.next.point.PointHelper;
+
+import org.json.JSONObject;
 
 import java.util.HashMap;
 
@@ -112,5 +116,14 @@ import java.util.HashMap;
         });
     }
 
+
+    public void pushSyncConfig(String url, JSONObject params) {
+        realGetData(DataModel.invoke(JsonRequestModel.class).params(params), url, new BaseDataCallback<HttpResponse>() {
+            @Override
+            public void dataCallback(HttpResponse data) {
+                ((PointHelper) getHelper()).pushSyncConfigDataCallBack(data);
+            }
+        });
+    }
 
 }

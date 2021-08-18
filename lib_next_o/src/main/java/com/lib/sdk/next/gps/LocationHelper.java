@@ -17,6 +17,7 @@ package com.lib.sdk.next.gps;
 
 import com.bozh.logger.Logger;
 import com.lib.sdk.next.NextResultInfo;
+import com.lib.sdk.next.base.IBaseCallBack;
 import com.lib.sdk.next.base.IBaseHelper;
 import com.lib.sdk.next.base.NxMap;
 import com.lib.sdk.next.o.R;
@@ -57,8 +58,11 @@ public class LocationHelper extends IBaseHelper<RobotPresenter> implements  Init
      */
     public static final int  SELECT = 2;
 
+
     private OnLocationListener mLocationListener;
 
+
+    private MapDrawView mMapDrawView;
 
     public LocationHelper(NxMap nxMap) {
         super(nxMap, new RobotPresenter());
@@ -69,6 +73,15 @@ public class LocationHelper extends IBaseHelper<RobotPresenter> implements  Init
     public LocationHelper setInitPointType(int type){
         this.mInitLocationType = type;
         return this;
+    }
+
+    public void setIsEdit(boolean isEdit){
+        if (!isEdit) {
+            mMapDrawView.setEditType(MapDrawView.TYPE_EDIT_INIT);
+        } else {
+            mMapDrawView.setEditType(MapDrawView.TYPE_EDIT_TYPE_INIT_LOCATION);
+
+        }
     }
 
     public int getInitPointType(){
@@ -95,21 +108,36 @@ public class LocationHelper extends IBaseHelper<RobotPresenter> implements  Init
 
     @Override
     public void showErr(String uri, int code, String msg) {
-
+        if(mLocationListener!=null){
+            mLocationListener.onHttpError(uri,code,msg);
+        }
+        else{
+            Logger.e("LocationHelper callback is null");
+        }
     }
 
     @Override
     public void attachView(MapDrawView drawView) {
+        this.mMapDrawView = drawView;
+    }
 
+    @Override
+    protected void onCreate(NxMap nxMap) {
+        super.onCreate(nxMap);
+        setIsEdit(false);
     }
 
     @Override
     public void initLocationDataCallBack(HttpResponse data) {
         try {
-            if (data.code == 0) {
-                mLocationListener.onSuccess(mInitLocationType);
+            if (data.code == 0 && mLocationListener != null) {
+                if (mLocationListener != null) {
+                    mLocationListener.onSuccess(mInitLocationType);
+                }
             } else {
-                mLocationListener.onFail(mInitLocationType, new NextResultInfo(data.code, data.info));
+                if(mLocationListener!=null){
+                    mLocationListener.onFail(mInitLocationType, new NextResultInfo(data.code, data.info));
+                }
             }
         }
         catch (Exception e){
@@ -183,9 +211,10 @@ public class LocationHelper extends IBaseHelper<RobotPresenter> implements  Init
     public void setLocationListener(LocationHelper.OnLocationListener locationListener) {
         this.mLocationListener = locationListener;
     }
-    public interface OnLocationListener {
-        void onSuccess(int type);
+    public abstract class OnLocationListener implements IBaseCallBack {
 
-        void onFail(int type,NextResultInfo info);
+        public abstract void onSuccess(int type);
+
+        public abstract void onFail(int type, NextResultInfo info);
     }
 }

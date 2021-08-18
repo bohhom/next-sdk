@@ -17,6 +17,8 @@ package com.lib.sdk.next.point;
 
 import com.lib.sdk.next.o.map.bean.PositionPointBean;
 
+import java.util.List;
+
 /**
  * FileName: PointOption
  * Author: zhikai.jin
@@ -41,6 +43,16 @@ public class PointOption {
     private int edType = -1;
 
     private PositionPointBean currentOperatePoint;
+
+    private List<PositionPointBean> currentOperatePointList;
+
+    public List<PositionPointBean> getCurrentOperatePointList() {
+        return currentOperatePointList;
+    }
+
+    public void setCurrentOperatePointList(List<PositionPointBean> currentOperatePointList) {
+        this.currentOperatePointList = currentOperatePointList;
+    }
 
     public PositionPointBean getCurrentOperatePoint() {
         return currentOperatePoint;

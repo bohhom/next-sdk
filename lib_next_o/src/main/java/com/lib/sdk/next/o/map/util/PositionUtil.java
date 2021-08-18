@@ -211,13 +211,14 @@ public class PositionUtil {
      * @param positionPointList
      * @return
      */
-    public static void deletePositionPoint(PositionPointBean positionPointBean, List<PositionPointBean> positionPointList) {
+    public static boolean deletePositionPoint(PositionPointBean positionPointBean, List<PositionPointBean> positionPointList) {
         for (PositionPointBean pointBean : positionPointList) {
             if (pointBean.getPointName().equals(positionPointBean.getPointName()) && positionPointBean.getType() == pointBean.getType()) {
                 positionPointList.remove(pointBean);
-                break;
+                return true;
             }
         }
+        return false;
     }
 
     /**

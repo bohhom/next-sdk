@@ -17,6 +17,8 @@ package com.lib.sdk.next.base;
 
 import android.view.View;
 
+import com.lib.sdk.next.IMapDrawListener;
+import com.lib.sdk.next.IMapTouchListener;
 import com.lib.sdk.next.base.IBaseHelper;
 import com.lib.sdk.next.gps.LocationHelper;
 import com.lib.sdk.next.o.map.bean.PositionPointBean;
@@ -46,5 +48,9 @@ public interface INmap {
     void onRockViewVisible();
 
     void onRockViewHide();
+
+    void setOnMapDrawListener(IMapDrawListener mapDrawListener);
+
+    void setOnMapTouchListener(IMapTouchListener mapTouchListener);
 
 }

@@ -18,15 +18,19 @@ package com.lib.sdk.next;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import com.lib.sdk.next.creater.RockerView;
 import com.lib.sdk.next.base.INmap;
@@ -101,7 +105,11 @@ public class NextMapView extends FrameLayout implements INmap, IRobotLaserCallBa
     //摇杆
     private RockerView mRockerView;
 
-    private  RobotHelper mRobotHelper;
+    private RobotHelper mRobotHelper;
+
+    private IMapDrawListener mMapDrawListener;
+
+    private IMapTouchListener mMapTouchListener;
 
 
     public NextMapView(@NonNull Context context) {
@@ -118,6 +126,7 @@ public class NextMapView extends FrameLayout implements INmap, IRobotLaserCallBa
 
 
     {
+
         LayoutInflater.from(getContext()).inflate(R.layout.robot_next_map_view, this, true);
         mCustomFrameLayout = findViewById(R.id.custom_view);
         mMapDrawView = findViewById(R.id.map_view);
@@ -125,25 +134,74 @@ public class NextMapView extends FrameLayout implements INmap, IRobotLaserCallBa
         initEvent();
         mRobotHelper = new RobotHelper();
         mRobotHelper.registerRobotLaserInfo(this);
+
+        mMapDrawView.setOnDrawListener(new MapDrawView.IOnDrawListener() {
+            @Override
+            public void onDraw(Canvas canvas) {
+
+                if (mMapDrawListener != null) {
+                    mMapDrawListener.onDraw(canvas);
+                }
+            }
+        });
+
+        mMapDrawView.setOnViewTouchListener(new MapDrawView.ITouchListener() {
+            @Override
+            public void onScrollBegin(MotionEvent e, float bitmapX, float bitmapY) {
+                if (mMapTouchListener != null) {
+                    mMapTouchListener.onScrollBegin(e, bitmapX, bitmapY);
+                }
+            }
+
+            @Override
+            public void onScrollEnd(MotionEvent e, float bitmapX, float bitmapY) {
+                if (mMapTouchListener != null) {
+                    mMapTouchListener.onScrollEnd(e, bitmapX, bitmapY);
+                }
+            }
+
+            @Override
+            public void onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY, float bitmapX, float bitmapY) {
+                if (mMapTouchListener != null) {
+                    mMapTouchListener.onScroll(e1, e2, distanceX, distanceY, bitmapX, bitmapY);
+                }
+            }
+
+            @Override
+            public void onSingleTapUp(MotionEvent e, float bitmapX, float bitmapY) {
+                if (mMapTouchListener != null) {
+                    mMapTouchListener.onSingleTapUp(e, bitmapX, bitmapY);
+                }
+            }
+
+
+            @Override
+            public void onUpOrCancel(MotionEvent e, float bitmapX, float bitmapY) {
+                if (mMapTouchListener != null) {
+                    mMapTouchListener.onUpOrCancel(e, bitmapX, bitmapY);
+                }
+            }
+
+        });
     }
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         EventBus.getDefault().register(this);
-        RobotStatusService.start(GlobalOperate.getApp(), RequestManager.mSocketBaseUrl ,SocketRequestInterface.ROBOT_STATUS);
+        RobotStatusService.start(GlobalOperate.getApp(), RequestManager.mSocketBaseUrl, SocketRequestInterface.ROBOT_STATUS);
     }
 
-    @Subscribe( threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateNextRobotStatus(RobotStatusEvent robotStatusEvent) {
-        Log.w(NextTag.TAG,"nextMapView robot updateStatus");
+        Log.w(NextTag.TAG, "nextMapView robot updateStatus");
 
         RobotStatusBean robotStatusInfo = robotStatusEvent.getRobotStatusBean();
         Bitmap robotPositionBitmap = ImageCache.getInstance().getIconBitmap(getContext().getResources(), R.drawable.robot_point);
 
         try {
             JSONObject positionObject = new JSONObject(robotStatusInfo.getPositionJson());
-            double resolution = ProjectCacheManager.getMapResolution(GlobalOperate.getApp(),robotStatusInfo.getProjectId());
+            double resolution = ProjectCacheManager.getMapResolution(GlobalOperate.getApp(), robotStatusInfo.getProjectId());
             double originX = ProjectCacheManager.getMapOriginX(GlobalOperate.getApp(), robotStatusInfo.getProjectId());
             double originY = ProjectCacheManager.getMapOriginY(GlobalOperate.getApp(), robotStatusInfo.getProjectId());
 
@@ -179,8 +237,6 @@ public class NextMapView extends FrameLayout implements INmap, IRobotLaserCallBa
             e.printStackTrace();
         }
     }
-
-
 
 
     public NxMap getNxMap() {
@@ -279,13 +335,12 @@ public class NextMapView extends FrameLayout implements INmap, IRobotLaserCallBa
     @Override
     public void setRobotPosition(LocationHelper helper) {
 
-        if(helper.getInitPointType() == LocationHelper.ENFORCE || helper.getInitPointType() == LocationHelper.SMART){
+        if (helper.getInitPointType() == LocationHelper.ENFORCE || helper.getInitPointType() == LocationHelper.SMART) {
             mMapDrawView.setChoosen(false);
-        }
-        else{
+        } else {
             mMapDrawView.setChoosen(true);
         }
-        mMapDrawView.setEditType(MapDrawView.TYPE_EDIT_TYPE_INIT_LOCATION);
+//        mMapDrawView.setEditType(MapDrawView.TYPE_EDIT_TYPE_INIT_LOCATION);
         initLocationPoint(helper);
 
     }
@@ -313,6 +368,16 @@ public class NextMapView extends FrameLayout implements INmap, IRobotLaserCallBa
     @Override
     public void onRockViewHide() {
         mRockerView.setVisibility(GONE);
+    }
+
+    @Override
+    public void setOnMapDrawListener(IMapDrawListener mapDrawListener) {
+        this.mMapDrawListener = mapDrawListener;
+    }
+
+    @Override
+    public void setOnMapTouchListener(IMapTouchListener mapTouchListener) {
+        this.mMapTouchListener = mapTouchListener;
     }
 
 
@@ -398,7 +463,7 @@ public class NextMapView extends FrameLayout implements INmap, IRobotLaserCallBa
         super.onDetachedFromWindow();
         mRobotHelper.unRegisterRobotLaser();
         EventBus.getDefault().unregister(this);
-        Log.w(NextTag.TAG,"nextMapView robot onDetachedFromWindow");
+        Log.w(NextTag.TAG, "nextMapView robot onDetachedFromWindow");
     }
 
     /**

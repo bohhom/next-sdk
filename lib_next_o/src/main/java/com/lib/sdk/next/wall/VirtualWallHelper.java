@@ -18,6 +18,7 @@ package com.lib.sdk.next.wall;
 
 import android.util.Log;
 
+import com.bozh.logger.Logger;
 import com.lib.sdk.next.NextResultInfo;
 import com.lib.sdk.next.base.IBaseCallBack;
 import com.lib.sdk.next.base.IBaseHelper;
@@ -81,7 +82,13 @@ public class VirtualWallHelper extends IBaseHelper<VirtualWallPresenter> impleme
 
     @Override
     public void showErr(String uri, int code, String msg) {
-        mVirtualListener.onHttpError(uri,code,msg);
+        if(mVirtualListener!=null){
+            mVirtualListener.onHttpError(uri,code,msg);
+        }
+        else{
+            Logger.e("VirtualWallHelper callback is null");
+        }
+
     }
 
     @Override
