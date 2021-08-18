@@ -330,18 +330,23 @@ public class PointHelper extends IBaseHelper<PointPresenter> implements IPushSyn
 
         //修改该点名字
         for (PositionPointBean pointEntry : updatePositionList) {
+            if (pointBean != null) {
+                if (pointEntry.getPointName().equals(pointBean.getPointName())) {
+                    //0:导航点 1:初始点 2：充电点 3：待命点
+                    if ((getPointType() == POINT_NAV_TYPE && pointEntry.getType() == PositionPointBean.TYPE_NAVIGATION_POINT) ||
+                            (getPointType() == POINT_INIT_TYPE && pointEntry.getType() == PositionPointBean.TYPE_INIT_POINT) ||
+                            (getPointType() == POINT_CHARGE_TYPE && pointEntry.getType() == PositionPointBean.TYPE_CHARGE_POINT) ||
+                            getPointType() == POINT_STANDBY_TYPE && pointEntry.getType() == PositionPointBean.TYPE_STANDBY_POINT) {
+                        pointEntry.setPointName(mPointOption.getPointName());
+                        break;
+                    }
 
-            if (pointEntry.getPointName().equals(pointBean.getPointName())) {
-                //0:导航点 1:初始点 2：充电点 3：待命点
-                if ((getPointType() == POINT_NAV_TYPE && pointEntry.getType() == PositionPointBean.TYPE_NAVIGATION_POINT) ||
-                        (getPointType() == POINT_INIT_TYPE && pointEntry.getType() == PositionPointBean.TYPE_INIT_POINT) ||
-                        (getPointType() == POINT_CHARGE_TYPE && pointEntry.getType() == PositionPointBean.TYPE_CHARGE_POINT) ||
-                        getPointType() == POINT_STANDBY_TYPE && pointEntry.getType() == PositionPointBean.TYPE_STANDBY_POINT) {
-                    pointEntry.setPointName(mPointOption.getPointName());
-                    break;
                 }
-
             }
+            else{
+                mINavPointListener.onUpdateNameFail(new NextResultInfo(NextException.CODE_NEXT_FAIL,"point is null"));
+            }
+
         }
         pushSyncConfig(updatePositionList);
     }

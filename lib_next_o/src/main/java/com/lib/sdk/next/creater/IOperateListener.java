@@ -30,4 +30,6 @@ public abstract class IOperateListener implements IBaseCallBack {
 
     public abstract void onCancel(NextResultInfo resultInfo);
 
+    public abstract void onClose(int type,NextResultInfo resultInfo);
+
 }

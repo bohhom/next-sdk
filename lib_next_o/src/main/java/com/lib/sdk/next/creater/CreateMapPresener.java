@@ -326,6 +326,8 @@ public class CreateMapPresener extends HttpPresenter {
 
             ImageCache.getInstance().clearBitmapToMemoryCache();
             RobotConstant.mRobotStatusBean.setProjectId(projectId);
+            Logger.d("create map is success , projectId = %s" + projectId);
+            Logger.d("create map is success , robotProjectId = %s" + RobotConstant.mRobotStatusBean.getProjectId());
         } catch (JSONException e) {
             e.printStackTrace();
         }

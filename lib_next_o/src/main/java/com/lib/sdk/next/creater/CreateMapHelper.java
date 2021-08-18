@@ -51,6 +51,7 @@ import com.lib.sdk.next.robot.RobotStatusInfo;
 import com.lib.sdk.next.robot.bean.RobotLaserDataBean;
 import com.lib.sdk.next.robot.bean.RobotStatusBean;
 import com.lib.sdk.next.robot.constant.RobotConstant;
+import com.lib.sdk.next.tag.NextTag;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -350,19 +351,25 @@ public class CreateMapHelper extends IBaseHelper<CreateMapPresener> implements I
         if (code == 0) {
             //结束闭环
             if (mLoopOperateType == LoopOperate.END_LOOP) {
+                if (mOperateListener != null) {
+                    mOperateListener.onClose(LoopOperate.END_LOOP, new NextResultInfo(NextException.CODE_NEXT_SUCCESS, response.info));
+                }
 
             }
             //开始闭环
             else if (mLoopOperateType == LoopOperate.START_LOOP) {
-
+                if (mOperateListener != null) {
+                    mOperateListener.onClose(LoopOperate.START_LOOP, new NextResultInfo(NextException.CODE_NEXT_SUCCESS, response.info));
+                }
             }
         } else {
-            ToastUtil.showShort(mContext, info);
+            mOperateListener.onClose(mLoopOperateType, new NextResultInfo(NextException.CODE_NEXT_FAIL, response.info));
         }
     }
 
     @Override
     public void onRobotStatus(int code, RobotStatusInfo robotStatusInfo) {
+        Log.d(NextTag.TAG,"createMap projectId ===" + robotStatusInfo.getProjectId());
         Bitmap robotPositionBitmap = ImageCache.getInstance().getIconBitmap(mMapControlView.getContext().getResources(), R.drawable.robot_point);
 
         try {
