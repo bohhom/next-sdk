@@ -2,6 +2,7 @@ package com.bozhon.sdk.next.one;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,6 +36,11 @@ public class RobotSpeedActivity extends AppCompatActivity {
         nxMap.onShowMapView(RobotConstant.mRobotStatusBean.getProjectId());
 
         SettingHelper.getInstance().setRobotSpeedListener(new SettingHelper.IRobotSpeedListener() {
+            @Override
+            public void onHttpError(String url, int code, String msg) {
+                Toast.makeText(RobotSpeedActivity.this, "报错动作 = +" + url + "|code = " + code + "|msg =" + msg, Toast.LENGTH_SHORT).show();
+            }
+
             @Override
             public void onSetRobotSpeed(NextResultInfo resultInfo) {
 

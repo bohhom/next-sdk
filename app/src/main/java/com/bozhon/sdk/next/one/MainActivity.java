@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.bozhon.sdk.next.one.databinding.ActivityMainBinding;
+import com.lib.sdk.next.NextException;
 import com.lib.sdk.next.NextResultInfo;
 import com.lib.sdk.next.callback.IPullProjectCallBack;
 import com.lib.sdk.next.project.ProjectInfoHelper;
@@ -51,14 +52,22 @@ public class MainActivity extends AppCompatActivity {
                 switch (position) {
                     case 0:
                         ProjectInfoHelper.getInstance().pullNeedUpdateProject(new IPullProjectCallBack() {
+
+
                             @Override
-                            public void onSuccess() {
-                                Toast.makeText(MainActivity.this,"拉取数据成功，请进行下一步操作" ,Toast.LENGTH_SHORT).show();
+                            public void onHttpError(String url, int code, String msg) {
+                                Toast.makeText(MainActivity.this,"code ==" + code + "|msg = " +msg,Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
-                            public void onFail(NextResultInfo info) {
-                                Toast.makeText(MainActivity.this,"错误信息" + info.getResultMsg(),Toast.LENGTH_SHORT).show();
+                            public void onPullProjectResult(NextResultInfo resultInfo) {
+                                if(resultInfo.getResultCode() == NextException.CODE_NEXT_SUCCESS){
+                                    Toast.makeText(MainActivity.this,"拉取数据成功，请进行下一步操作" ,Toast.LENGTH_SHORT).show();
+                                }
+                                else{
+                                    Toast.makeText(MainActivity.this,"错误信息" + resultInfo.getResultMsg(),Toast.LENGTH_SHORT).show();
+                                }
+
                             }
                         });
                         break;
@@ -111,6 +120,20 @@ public class MainActivity extends AppCompatActivity {
                         intent.setClass(MainActivity.this,MapTaskActivity.class);
                         startActivity(intent);
                         break;
+
+                    case 12:
+                        intent.setClass(MainActivity.this,LocationNoViewActivity.class);
+                        startActivity(intent);
+                        break;
+
+                    case 13:
+                        intent.setClass(MainActivity.this,MapRectActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 14:
+                        intent.setClass(MainActivity.this,PointNoViewActivity.class);
+                        startActivity(intent);
+                        break;
                     default:
                         break;
                 }
@@ -129,6 +152,9 @@ public class MainActivity extends AppCompatActivity {
         mDatas.add("地图操作");
         mDatas.add("拓展地图");
         mDatas.add("执行任务");
+        mDatas.add("无界面定位初始点");
+        mDatas.add("区域画图");
+        mDatas.add("无界面操作点");
 
         dataBinding.processRc.setAdapter(mMainAdapter);
         mMainAdapter.setmData(mDatas);

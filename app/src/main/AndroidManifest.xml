@@ -63,6 +63,18 @@
         <activity
             android:name=".MapTaskActivity"
             android:screenOrientation="landscape" />
+
+        <activity
+            android:name=".LocationNoViewActivity"
+            android:screenOrientation="landscape" />
+
+        <activity
+            android:name=".MapRectActivity"
+            android:screenOrientation="landscape" />
+
+        <activity
+            android:name=".PointNoViewActivity"
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>

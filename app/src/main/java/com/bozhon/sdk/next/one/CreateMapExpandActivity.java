@@ -43,12 +43,22 @@ public class CreateMapExpandActivity extends AppCompatActivity {
         CreateMapHelper.getInstance().onCreateView(dataBinding.robotCreateView,CreateMapHelper.CREATE_TYPE_EXPAND, selectProjectBean);
         CreateMapHelper.getInstance().setOperateSource(new IOperateListener() {
             @Override
+            public void onHttpError(String url, int code, String msg) {
+
+            }
+
+            @Override
             public void onSave(NextResultInfo resultInfo) {
 
             }
 
             @Override
             public void onCancel(NextResultInfo resultInfo) {
+
+            }
+
+            @Override
+            public void onClose(int type, NextResultInfo resultInfo) {
 
             }
         });

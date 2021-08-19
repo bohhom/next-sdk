@@ -2,6 +2,7 @@ package com.bozhon.sdk.next.one;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,6 +32,11 @@ public class EaseActivity extends AppCompatActivity {
 
         EaseHelper easeHelper = new EaseHelper(nxMap);
         easeHelper.setEaseListener(new EaseHelper.IEaseListener() {
+            @Override
+            public void onHttpError(String url, int code, String msg) {
+                Toast.makeText(EaseActivity.this, "报错动作 = +" + url + "|code = " + code + "|msg =" + msg, Toast.LENGTH_SHORT).show();
+            }
+
             @Override
             public void onResult(NextResultInfo resultInfo) {
 

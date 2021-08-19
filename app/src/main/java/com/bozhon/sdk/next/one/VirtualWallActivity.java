@@ -36,25 +36,21 @@ public class VirtualWallActivity extends AppCompatActivity {
 
         virtualWallHelper.setVirtualListener(new VirtualWallHelper.IOnVirtualListener() {
             @Override
-            public void onSaveSuccess(VirtualWallBean virtualWallBean) {
-                VirtualWallBean currentVirtual = virtualWallBean;
-                currentVirtual.getWallPointList();
-            }
-
-            @Override
-            public void onSaveFailed(NextResultInfo resultInfo) {
+            public void onHttpError(String url, int code, String msg) {
 
             }
 
             @Override
-            public void onDeletedSuccess(NextResultInfo resultInfo) {
+            public void onSave(NextResultInfo resultInfo, VirtualWallBean virtualWallBean) {
 
             }
 
             @Override
-            public void onDeletedFail(NextResultInfo resultInfo) {
+            public void onDelete(NextResultInfo resultInfo) {
 
             }
+
+
         });
 
         dataBinding.createWallButton.setOnClickListener(new View.OnClickListener() {

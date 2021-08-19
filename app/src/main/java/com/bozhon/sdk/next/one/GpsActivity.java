@@ -44,8 +44,14 @@ public class GpsActivity extends AppCompatActivity {
 
         locationHelper.setLocationListener(new LocationHelper.OnLocationListener() {
             @Override
+            public void onHttpError(String url, int code, String msg) {
+
+            }
+
+            @Override
             public void onSuccess(int type) {
                 Log.w("LocationHelper","LocationHelper is success + type= " + type);
+                locationHelper.setIsEdit(false);
             }
 
             @Override
@@ -78,6 +84,7 @@ public class GpsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(GpsActivity.this,"智能初始化",Toast.LENGTH_SHORT).show();
+                locationHelper.setIsEdit(true);
                 locationHelper.setInitPointType(LocationHelper.SMART);
                 nxMap.setRobotPosition(locationHelper);
             }
@@ -87,6 +94,7 @@ public class GpsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(GpsActivity.this,"强制初始化",Toast.LENGTH_SHORT).show();
+                locationHelper.setIsEdit(true);
                 locationHelper.setInitPointType(LocationHelper.ENFORCE);
                 nxMap.setRobotPosition(locationHelper);
             }
@@ -97,6 +105,7 @@ public class GpsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Toast.makeText(GpsActivity.this,"选点初始化",Toast.LENGTH_SHORT).show();
                 locationHelper.setInitPointType(LocationHelper.SELECT);
+                locationHelper.setIsEdit(true);
                 nxMap.setRobotPosition(locationHelper);
             }
         });

@@ -34,7 +34,7 @@ public class RobotStatusActivity extends AppCompatActivity {
         robotHelper.registerRobotStatus(RobotStatusActivity.this,new IRobotStatusCallBack() {
             @Override
             public void onRobotStatus(int code,RobotStatusInfo robotStatusInfo) {
-                dataBinding.textView.setText("机器人状态 =" + robotStatusInfo.getPositionJson() +"| =" + System.currentTimeMillis());
+                dataBinding.textView.setText("工程id = " + robotStatusInfo.getProjectId()+"|机器人状态 =" + robotStatusInfo.getPositionJson() +"| =" + System.currentTimeMillis());
             }
 
             @Override
@@ -47,6 +47,26 @@ public class RobotStatusActivity extends AppCompatActivity {
 
             }
         });
+
+        robotHelper.registerRobotStatus(RobotStatusActivity.this,new IRobotStatusCallBack() {
+            @Override
+            public void onRobotStatus(int code,RobotStatusInfo robotStatusInfo) {
+
+                dataBinding.textView.setText("工程id = " + robotStatusInfo.getProjectId()+"|机器人世界坐标 =" + robotStatusInfo.getRobotPostionBean().getWorldX()+"|Y = " + "|机器人世界坐标 =" + robotStatusInfo.getRobotPostionBean().getWorldY() + "|机器人方向角 ="+robotStatusInfo.getRobotPostionBean().getTheta());
+
+            }
+
+            @Override
+            public void onRobotError(int code,RobotErrorStatusInfo robotErrorInfo) {
+
+            }
+
+            @Override
+            public void onRobotNav(int code,RobotNavigationStatusInfo robotNavInfo) {
+
+            }
+        });
+
 
         dataBinding.button.setOnClickListener(new View.OnClickListener() {
             @Override

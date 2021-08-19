@@ -1,12 +1,14 @@
 package com.bozhon.sdk.next.one;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bozhon.sdk.next.one.databinding.ActivityTaskUiBinding;
+import com.lib.sdk.next.NextException;
 import com.lib.sdk.next.NextResultInfo;
 import com.lib.sdk.next.NextSDKHelper;
 import com.lib.sdk.next.base.NxMap;
@@ -35,6 +37,11 @@ public class MapTaskActivity extends AppCompatActivity {
 
         NextOperateHelper.getInstance().setRobotOperateListener(new NextOperateHelper.IRobotOperateListener() {
             @Override
+            public void onHttpError(String url, int code, String msg) {
+
+            }
+
+            @Override
             public void onSet2DNavResult(NextResultInfo resultInfo) {
 
             }
@@ -45,9 +52,15 @@ public class MapTaskActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCommandResult(NextResultInfo resultInfo) {
+            public void onCommandResult(int type, NextResultInfo resultInfo) {
+                if(type == NextOperateHelper.COMMAND_REST){
+                    if (resultInfo.getResultCode() == NextException.CODE_NEXT_SUCCESS) {
+                        Log.w("MapTaskActivity","复位成功");
+                    }
+                }
 
             }
+
         });
 
         dataBinding.taskNavBtn.setOnClickListener(new View.OnClickListener() {
@@ -71,10 +84,18 @@ public class MapTaskActivity extends AppCompatActivity {
             }
         });
 
+        dataBinding.taskRestStopBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NextOperateHelper.getInstance().onRestAndStopCommand();
+            }
+        });
+
         dataBinding.taskRestBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NextOperateHelper.getInstance().onRestTask();
+                //复位
+                NextOperateHelper.getInstance().onRestCommand();
             }
         });
     }

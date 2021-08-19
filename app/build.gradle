@@ -37,11 +37,11 @@ dependencies {
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    api 'com.github.markzhai:blockcanary-android:1.5.0'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    implementation 'io.github.bohhom:next-sdk:1.0.0'
+    implementation project(':lib_next_o')
+//    implementation 'io.github.bohhom:next-sdk:1.1.7'
     implementation 'com.squareup.retrofit2:converter-scalars:2.3.0'
     implementation 'com.tamic.novate:novate:1.5.5'
     implementation 'org.greenrobot:eventbus:3.2.0'
